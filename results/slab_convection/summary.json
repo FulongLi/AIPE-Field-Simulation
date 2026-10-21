@@ -1,0 +1,628 @@
+{
+  "schema": "aipe.field-simulation/benchmark-summary/0.1",
+  "package": {
+    "name": "aipe-fieldsim",
+    "version": "0.1.0"
+  },
+  "benchmark": "slab_convection",
+  "title": "Steady conduction slab with convective boundary",
+  "description": "2-D rectangle 0<=x<=L, 0<=y<=H meshed with ElmerGrid quadrilaterals; T = T0 at x=0, convection h,T_inf at x=L, adiabatic y faces, uniform volumetric heat source q.",
+  "reference": "1-D conduction with generation: T(x) = -q x^2/(2k) + C1 x + T0, C1 from the Robin condition at x=L.",
+  "created_at": "2026-10-21T13:57:34+08:00",
+  "finished_at": "2026-10-21T13:57:35+08:00",
+  "parameters": {
+    "k_W_per_m_K": 200.0,
+    "L_m": 0.1,
+    "H_m": 0.02,
+    "T0_K": 300.0,
+    "h_W_per_m2_K": 50.0,
+    "T_inf_K": 290.0,
+    "q_vol_W_per_m3": 1000000.0,
+    "density_kg_per_m3": 2700.0,
+    "heat_capacity_J_per_kg_K": 900.0,
+    "nx0": 10
+  },
+  "analytic": {
+    "T_face_K": {
+      "value": 324.1463414634146,
+      "unit": "K"
+    },
+    "T_max_K": {
+      "value": 324.15362879238546,
+      "unit": "K"
+    },
+    "x_of_T_max_m": {
+      "value": 0.09829268292682926,
+      "unit": "m"
+    },
+    "Q_convective_W_per_m": {
+      "value": 34.146341463414615,
+      "unit": "W/m"
+    },
+    "Q_dirichlet_W_per_m": {
+      "value": 1965.8536585365853,
+      "unit": "W/m"
+    },
+    "Q_generated_W_per_m": {
+      "value": 2000.0,
+      "unit": "W/m"
+    }
+  },
+  "levels": [
+    {
+      "level": 0,
+      "h_m": 0.01,
+      "elements": 20,
+      "nodes": 33,
+      "case_dir": "runs\\benchmarks\\slab_convection\\level0",
+      "values": {
+        "T_face_K": 324.1463414634152,
+        "T_max_K": 324.1463414634,
+        "T_min_K": 300.0,
+        "Q_convective_W_per_m": 34.146341463400006,
+        "Q_convective_from_loads_W_per_m": 34.14634146341,
+        "Q_dirichlet_W_per_m": 1965.853658537,
+        "Q_generated_W_per_m": 2000.0,
+        "sum_of_nodal_loads_W_per_m": -2000.0,
+        "energy_balance_residual_rel": 0.0,
+        "profile_rms_error_K": 0.04515767580059203,
+        "profile_rms_error_rel": 0.001322192616049628,
+        "convective_face_area_m": 0.02
+      },
+      "timing": {
+        "grid_and_solve_s": 0.117,
+        "elmer_solver_real_s": 0.09,
+        "level_total_s": 0.493
+      },
+      "warnings": []
+    },
+    {
+      "level": 1,
+      "h_m": 0.005,
+      "elements": 80,
+      "nodes": 105,
+      "case_dir": "runs\\benchmarks\\slab_convection\\level1",
+      "values": {
+        "T_face_K": 324.1463414634282,
+        "T_max_K": 324.1463414634,
+        "T_min_K": 300.0,
+        "Q_convective_W_per_m": 34.146341463450014,
+        "Q_convective_from_loads_W_per_m": 34.14634146343,
+        "Q_dirichlet_W_per_m": 1965.853658537,
+        "Q_generated_W_per_m": 2000.0,
+        "sum_of_nodal_loads_W_per_m": -2000.000000001,
+        "energy_balance_residual_rel": 4.999947122996673e-13,
+        "profile_rms_error_K": 0.011289418954913592,
+        "profile_rms_error_rel": 0.00033054815415194073,
+        "convective_face_area_m": 0.02
+      },
+      "timing": {
+        "grid_and_solve_s": 0.128,
+        "elmer_solver_real_s": 0.09,
+        "level_total_s": 0.264
+      },
+      "warnings": []
+    },
+    {
+      "level": 2,
+      "h_m": 0.0025,
+      "elements": 320,
+      "nodes": 369,
+      "case_dir": "runs\\benchmarks\\slab_convection\\level2",
+      "values": {
+        "T_face_K": 324.1463414634558,
+        "T_max_K": 324.1520579269,
+        "T_min_K": 300.0,
+        "Q_convective_W_per_m": 34.146341463450014,
+        "Q_convective_from_loads_W_per_m": 34.1463414635,
+        "Q_dirichlet_W_per_m": 1965.85365854,
+        "Q_generated_W_per_m": 2000.0,
+        "sum_of_nodal_loads_W_per_m": -2000.000000002,
+        "energy_balance_residual_rel": 9.999894245993345e-13,
+        "profile_rms_error_K": 0.0028223546675070865,
+        "profile_rms_error_rel": 8.263703645266325e-05,
+        "convective_face_area_m": 0.02
+      },
+      "timing": {
+        "grid_and_solve_s": 0.126,
+        "elmer_solver_real_s": 0.1,
+        "level_total_s": 0.265
+      },
+      "warnings": []
+    }
+  ],
+  "comparisons": [
+    {
+      "quantity": "T_face_K",
+      "unit": "K",
+      "fem_finest": 324.1463414634558,
+      "analytic": 324.1463414634146,
+      "analytic_key": "T_face_K",
+      "rel_error_finest": 1.2713849703818797e-13,
+      "observed_order": -1.6009703769215484,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 324.1463414634152,
+          "exact": 324.1463414634146,
+          "rel_error": 1.7536344419060412e-15
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 324.1463414634282,
+          "exact": 324.1463414634146,
+          "rel_error": 4.1911863161554385e-14,
+          "observed_order": -4.578938713093387
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 324.1463414634558,
+          "exact": 324.1463414634146,
+          "rel_error": 1.2713849703818797e-13,
+          "observed_order": -1.6009703769215484
+        }
+      ]
+    },
+    {
+      "quantity": "T_max_K",
+      "unit": "K",
+      "fem_finest": 324.1520579269,
+      "analytic": 324.15362879238546,
+      "analytic_key": "T_max_K",
+      "rel_error_finest": 4.8460524452994704e-06,
+      "observed_order": 2.2138304757058833,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 324.1463414634,
+          "exact": 324.15362879238546,
+          "rel_error": 2.2481096425186067e-05
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 324.1463414634,
+          "exact": 324.15362879238546,
+          "rel_error": 2.2481096425186067e-05,
+          "observed_order": 0.0
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 324.1520579269,
+          "exact": 324.15362879238546,
+          "rel_error": 4.8460524452994704e-06,
+          "observed_order": 2.2138304757058833
+        }
+      ]
+    },
+    {
+      "quantity": "Q_convective_W_per_m",
+      "unit": "W/m",
+      "fem_finest": 34.146341463450014,
+      "analytic": 34.146341463414615,
+      "analytic_key": "Q_convective_W_per_m",
+      "rel_error_finest": 1.0366920020844976e-12,
+      "observed_order": 0.0,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 34.146341463400006,
+          "exact": 34.146341463414615,
+          "rel_error": 4.278279318116674e-13
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 34.146341463450014,
+          "exact": 34.146341463414615,
+          "rel_error": 1.0366920020844976e-12,
+          "observed_order": -1.2768847570469586
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 34.146341463450014,
+          "exact": 34.146341463414615,
+          "rel_error": 1.0366920020844976e-12,
+          "observed_order": 0.0
+        }
+      ]
+    },
+    {
+      "quantity": "Q_convective_from_loads_W_per_m",
+      "unit": "W/m",
+      "fem_finest": 34.1463414635,
+      "analytic": 34.146341463414615,
+      "analytic_key": "Q_convective_W_per_m",
+      "rel_error_finest": 2.5005876734342447e-12,
+      "observed_order": -2.472637847405175,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 34.14634146341,
+          "exact": 34.146341463414615,
+          "rel_error": 1.3504879754171798e-13
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 34.14634146343,
+          "exact": 34.146341463414615,
+          "rel_error": 4.5050947099818094e-13,
+          "observed_order": -1.738076641614949
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 34.1463414635,
+          "exact": 34.146341463414615,
+          "rel_error": 2.5005876734342447e-12,
+          "observed_order": -2.472637847405175
+        }
+      ]
+    },
+    {
+      "quantity": "Q_dirichlet_W_per_m",
+      "unit": "W/m",
+      "fem_finest": 1965.85365854,
+      "analytic": 1965.8536585365853,
+      "analytic_key": "Q_dirichlet_W_per_m",
+      "rel_error_finest": 1.7370051137725165e-12,
+      "observed_order": -3.0415150622447467,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 1965.853658537,
+          "exact": 1965.8536585365853,
+          "rel_error": 2.1096666184052937e-13
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 1965.853658537,
+          "exact": 1965.8536585365853,
+          "rel_error": 2.1096666184052937e-13,
+          "observed_order": 0.0
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 1965.85365854,
+          "exact": 1965.8536585365853,
+          "rel_error": 1.7370051137725165e-12,
+          "observed_order": -3.0415150622447467
+        }
+      ]
+    },
+    {
+      "quantity": "profile_rms_error_rel",
+      "unit": "1",
+      "fem_finest": 8.263703645266325e-05,
+      "analytic": null,
+      "analytic_key": null,
+      "rel_error_finest": null,
+      "observed_order": 1.9999999870526652,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.01,
+          "elements": 20,
+          "nodes": 33,
+          "value": 0.001322192616049628
+        },
+        {
+          "level": 1,
+          "h_m": 0.005,
+          "elements": 80,
+          "nodes": 105,
+          "value": 0.00033054815415194073
+        },
+        {
+          "level": 2,
+          "h_m": 0.0025,
+          "elements": 320,
+          "nodes": 369,
+          "value": 8.263703645266325e-05,
+          "observed_order": 1.9999999870526652,
+          "richardson_extrapolated": -3.769253992583731e-12
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "energy_balance_nodal_loads",
+      "value": 9.999894245993345e-13,
+      "tolerance": 1e-08,
+      "passed": true,
+      "description": "|sum of nodal loads + generated heat| / generated heat"
+    },
+    {
+      "name": "robin_vs_loads_convective_flow",
+      "value": 1.4638956713460867e-12,
+      "tolerance": 1e-08,
+      "passed": true,
+      "description": "h*(int T - T_inf*A) versus nodal loads on the convective face"
+    }
+  ],
+  "all_checks_passed": true,
+  "timing": {
+    "total_s": 1.023,
+    "per_level_s": [
+      0.493,
+      0.264,
+      0.265
+    ]
+  },
+  "tools": {
+    "elmersolver": {
+      "id": "elmersolver",
+      "name": "Elmer FEM ElmerSolver",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerSolver.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later (ElmerSolver), LGPL-2.1 (elmersolver library parts)",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "elmergrid": {
+      "id": "elmergrid",
+      "name": "Elmer FEM ElmerGrid",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerGrid.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "gmsh": {
+      "id": "gmsh",
+      "name": "Gmsh (python SDK)",
+      "found": true,
+      "path": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\gmsh.py",
+      "version": "4.15.2",
+      "revision": null,
+      "compiled": null,
+      "source": "python-module",
+      "licence": "GPL-2.0-or-later",
+      "home": null,
+      "notes": []
+    },
+    "python": {
+      "executable": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "version": "3.10.11",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "matplotlib": "3.10.9",
+        "gmsh": "4.15.2"
+      },
+      "platform": {
+        "system": "Windows",
+        "release": "10",
+        "machine": "AMD64"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "id": "evidence.slab_convection.analytic",
+      "kind": "analytical",
+      "description": "Steady conduction slab with convective boundary: closed-form reference. 1-D conduction with generation: T(x) = -q x^2/(2k) + C1 x + T0, C1 from the Robin condition at x=L.",
+      "source": {
+        "type": "textbook_formula",
+        "reference": "1-D conduction with generation: T(x) = -q x^2/(2k) + C1 x + T0, C1 from the Robin condition at x=L."
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [],
+        "inputs": [
+          "assumption.slab_convection.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:34+08:00",
+      "artifacts": [],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.slab_convection.fem.level0",
+      "kind": "simulation",
+      "description": "Steady conduction slab with convective boundary: Elmer FEM level 0, h = 0.01 m, 20 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.slab_convection.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:34+08:00",
+      "artifacts": [
+        {
+          "uri": "level0/case.json",
+          "sha256": "0c743e466dc13f25637da15f3cfb3e81fa07b21fd5a273ead667967216469dae"
+        },
+        {
+          "uri": "level0/case.sif",
+          "sha256": "1542a86ff90ea76e692f348818342c82057cd08740a9e5e7ba8c8f18d0877cb2"
+        },
+        {
+          "uri": "level0/results.json",
+          "sha256": "f98b40a2ba6f89a5d5c3319f7dd57ef24f5faf5fde37b4e1e613e474f95217f1"
+        },
+        {
+          "uri": "level0/elmersolver.log",
+          "sha256": "e6bccfcc45ded8f6f67d8f8078b63e18da65ca43e39a343f7346da18c3459ccd"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.slab_convection.fem.level1",
+      "kind": "simulation",
+      "description": "Steady conduction slab with convective boundary: Elmer FEM level 1, h = 0.005 m, 80 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.slab_convection.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:34+08:00",
+      "artifacts": [
+        {
+          "uri": "level1/case.json",
+          "sha256": "154413eeecd4824038004f394672e2c5b410b4893aba25743f88880ea62b14c7"
+        },
+        {
+          "uri": "level1/case.sif",
+          "sha256": "1542a86ff90ea76e692f348818342c82057cd08740a9e5e7ba8c8f18d0877cb2"
+        },
+        {
+          "uri": "level1/results.json",
+          "sha256": "2344fbed4802dd34c448d9cc2542e7a5cce0d7af833a4f6f8723e09e5a9613df"
+        },
+        {
+          "uri": "level1/elmersolver.log",
+          "sha256": "9d66cb20d0aaa8e8d050203a306054a6488735e625f3044b4fd4bc4284b67682"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.slab_convection.fem.level2",
+      "kind": "simulation",
+      "description": "Steady conduction slab with convective boundary: Elmer FEM level 2, h = 0.0025 m, 320 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.slab_convection.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:34+08:00",
+      "artifacts": [
+        {
+          "uri": "level2/case.json",
+          "sha256": "eeef1442db44afad6e86ea973b0278951cb17fd9fb4db91c9570ff5d1e256358"
+        },
+        {
+          "uri": "level2/case.sif",
+          "sha256": "1542a86ff90ea76e692f348818342c82057cd08740a9e5e7ba8c8f18d0877cb2"
+        },
+        {
+          "uri": "level2/results.json",
+          "sha256": "eb2c1e3291d30fcc43f2a1822ec1d1eac0af55f866beef2deb366bb69d35ae35"
+        },
+        {
+          "uri": "level2/elmersolver.log",
+          "sha256": "b60feda58847cb16c5b562c4635ed71bdd13b1bd03c892ebda7e598dbce71a3f"
+        }
+      ],
+      "review_status": "unreviewed"
+    }
+  ]
+}

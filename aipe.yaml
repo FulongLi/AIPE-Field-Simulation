@@ -1,0 +1,90 @@
+schema_version: 0.1.0
+id: aipe.field-simulation
+name: AIPE Field Simulation
+type: tool
+domains: [power-electronics, thermal-management, magnetics]
+description: Reproducible open-source field-simulation workflows (Gmsh meshing, ElmerGrid conversion, ElmerSolver FEM) for power-electronics thermal conduction, 2-D magnetostatics and 2-D eddy currents, with analytically verified benchmarks, mesh-convergence studies, DAB transformer-window and heat-sink parametric models, and AIPE evidence records (SI units, tool versions, SHA-256 artifacts).
+status: experimental
+maturity: prototype
+repository: https://github.com/FulongLi/AIPE-Field-Simulation
+license: MIT
+capabilities: [fem-thermal-conduction, fem-magnetostatics-2d, fem-eddy-current-2d, analytic-benchmark-verification, simulation-case-provenance]
+inputs:
+  - {name: model-parameters, description: 'SI parameter dictionaries (geometry, materials, currents, film coefficients) passed to the benchmark and model classes or the CLI.'}
+  - {name: engineering-state, description: 'Optional AIPE-Core Engineering State whose operating point supplies currents, frequency and ambient temperature (mapping done by the caller).', schema: 'https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json'}
+outputs:
+  - {name: case-directory, description: 'Mesh source, Elmer mesh database, rendered SIF, solver logs, SaveScalars/SaveLine data, VTU fields, results.json and case.json with tool versions, commands and SHA-256 hashes.'}
+  - {name: benchmark-summary, description: 'summary.json per benchmark or model: parameters, analytic references, FEM values, relative errors, convergence tables, consistency checks, timing, evidence fragments.'}
+  - {name: evidence-fragments, description: 'AIPE-Core style analytical/simulation/assumption evidence records with RFC 3339 timestamps, versioned tool attribution and hashed artifacts.'}
+dependencies:
+  - {id: aipe.core, version: 0.1.x, optional: true}
+compatibility: {core: 0.1.x, engineering_state: 0.1.x, integration: mapped}
+tools:
+  - id: gmsh
+    name: Gmsh
+    capabilities: [mesh-generation, parametric-cad-occ]
+    licence_class: open_source
+    optional: false
+    interfaces: [python, cli]
+    platforms: [windows, linux, macos]
+    url: 'https://gmsh.info/'
+    limitations: ['GPL-2.0-or-later; used through the python SDK (pip install gmsh). Required for every Gmsh-based benchmark and model; the ElmerGrid .grd route works without it.']
+  - id: elmer
+    name: Elmer FEM (ElmerSolver, ElmerGrid)
+    capabilities: [fem-thermal-conduction, fem-magnetostatics-2d, fem-eddy-current-2d]
+    licence_class: open_source
+    optional: false
+    interfaces: [cli, sif]
+    platforms: [windows, linux, macos]
+    url: 'https://www.elmerfem.org/'
+    limitations: ['ElmerSolver GPL-2.0-or-later, elmersolver library LGPL-2.1; portable Windows build 9.0 (Release 2026-01-20) qualified. Set AIPE_ELMERSOLVER or ELMER_HOME when the binaries are not on PATH. Serial (no MPI) execution only in this package.']
+  - id: openfoam
+    name: OpenFOAM
+    capabilities: [conjugate-heat-transfer-cfd]
+    licence_class: open_source
+    optional: true
+    interfaces: [cli]
+    platforms: [linux]
+    url: 'https://www.openfoam.com/'
+    limitations: ['Not integrated and not executed: no native Windows build (WSL2 or Docker required). Only a reproducible job specification is provided (docs/jobs/openfoam-heatsink-cfd-job.md); film coefficients in the heat-sink model are supplied inputs, not CFD results.']
+  - id: python
+    name: Python
+    capabilities: [analytic-benchmark-verification, simulation-case-provenance]
+    licence_class: open_source
+    optional: false
+    interfaces: [python, cli]
+    platforms: [windows, linux, macos]
+    url: 'https://www.python.org/'
+    limitations: ['Python 3.10+, numpy required; matplotlib optional for PNG plots; pytest, pyyaml and jsonschema for the test suite.']
+connectors: []
+validation:
+  status: tested
+  evidence:
+    - tests/test_solver.py
+    - tests/test_sif.py
+    - tests/test_vtu.py
+    - tests/test_savedata.py
+    - tests/test_analytic.py
+    - tests/test_tools_and_mesh.py
+    - tests/test_manifest.py
+    - results/benchmarks.md
+  limitations:
+    - 'Tested means: unit tests of parsers/templating/analytic formulas plus end-to-end solver tests executed on Windows 11 with Gmsh 4.15.2 and Elmer 9.0; the solver tests skip when the tools are absent.'
+    - 'Benchmarks are verified against closed-form solutions only; no measured validation of any transformer or heat-sink result.'
+    - 'The transformer AC winding-loss factor uses a homogenised solid-block conductivity and is an approximation indicator, not a Litz/foil loss prediction; 3-D transformer models are not provided.'
+    - 'CFD (OpenFOAM) is blocked on this platform; heat-sink film coefficients are supplied values.'
+documentation:
+  - README.md
+  - results/benchmarks.md
+  - docs/jobs/openfoam-heatsink-cfd-job.md
+  - LICENSE
+extensions:
+  aipe.field-simulation:
+    package: aipe-fieldsim 0.1.0
+    python_package: aipe_fieldsim
+    cli: aipe-fieldsim
+    python: '>=3.10'
+    case_record_schema: aipe.field-simulation/case-record/0.1
+    summary_schemas: [aipe.field-simulation/benchmark-summary/0.1, aipe.field-simulation/model-summary/0.1]
+    tool_discovery: {env: [AIPE_ELMERSOLVER, AIPE_ELMERGRID, ELMER_HOME, AIPE_WORKSPACE_ROOT], fallbacks: [PATH, 'tools/ElmerFEM*/bin']}
+    standalone_operation: {requires_aipe_core: false, requires_registry_service: false, requires_commercial_software: false, requires_network: false}

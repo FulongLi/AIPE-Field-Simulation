@@ -1,0 +1,561 @@
+{
+  "schema": "aipe.field-simulation/benchmark-summary/0.1",
+  "package": {
+    "name": "aipe-fieldsim",
+    "version": "0.1.0"
+  },
+  "benchmark": "coax_magnetostatic",
+  "title": "2-D magnetostatic coaxial conductor",
+  "description": "Gmsh OCC disks fragmented into inner conductor, gap and return shell; Elmer MgDyn2D with prescribed current densities; energy -> inductance per unit length.",
+  "reference": "L' = mu0/(2 pi) [1/4 + ln(b/a) + S(b,c)] with S the uniform-shell internal term; B_phi = mu0 I/(2 pi r) in the gap.",
+  "created_at": "2026-10-21T14:02:51+08:00",
+  "finished_at": "2026-10-21T14:02:53+08:00",
+  "parameters": {
+    "a_m": 0.002,
+    "b_m": 0.005,
+    "c_m": 0.006,
+    "current_A": 1000.0,
+    "h0_m": 0.0005
+  },
+  "analytic": {
+    "L_per_length_H_per_m": {
+      "value": 2.465453159698148e-07,
+      "unit": "H/m"
+    },
+    "energy_per_length_J_per_m": {
+      "value": 0.12327265798490741,
+      "unit": "J/m"
+    },
+    "B_phi_mid_gap_T": {
+      "value": 0.05714285714285715,
+      "unit": "T"
+    },
+    "r_mid_gap_m": {
+      "value": 0.0035,
+      "unit": "m"
+    },
+    "L_inner_internal_H_per_m": {
+      "value": 5.0000000000000004e-08,
+      "unit": "H/m"
+    },
+    "L_gap_H_per_m": {
+      "value": 1.8325814637483104e-07,
+      "unit": "H/m"
+    },
+    "L_shell_internal_H_per_m": {
+      "value": 1.328716959498381e-08,
+      "unit": "H/m"
+    }
+  },
+  "levels": [
+    {
+      "level": 0,
+      "h_m": 0.0005,
+      "elements": 1168,
+      "nodes": 623,
+      "case_dir": "runs\\benchmarks\\coax_magnetostatic\\level0",
+      "values": {
+        "energy_per_length_elmer_J_per_m": 0.1202434810168,
+        "energy_per_length_python_J_per_m": 0.12024348101678706,
+        "L_per_length_H_per_m": 2.404869620336e-07,
+        "L_per_length_python_H_per_m": 2.404869620335741e-07,
+        "B_phi_mid_gap_T": 0.0564781924678,
+        "B_profile_rms_error_rel": 0.015262985753546603,
+        "current_inner_A": 990.2950441982185,
+        "current_shell_A": -1000.0389559934238,
+        "net_current_savescalars_A": -9.743911795202,
+        "max_Az_Wb_per_m": 0.0002999359600055
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.173,
+        "elmer_solver_real_s": 0.12,
+        "level_total_s": 0.578
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    },
+    {
+      "level": 1,
+      "h_m": 0.00025,
+      "elements": 4437,
+      "nodes": 2295,
+      "case_dir": "runs\\benchmarks\\coax_magnetostatic\\level1",
+      "values": {
+        "energy_per_length_elmer_J_per_m": 0.1224922645092,
+        "energy_per_length_python_J_per_m": 0.12249226450918528,
+        "L_per_length_H_per_m": 2.449845290184e-07,
+        "L_per_length_python_H_per_m": 2.4498452901837054e-07,
+        "B_phi_mid_gap_T": 0.0569703241762,
+        "B_profile_rms_error_rel": 0.005472344431337784,
+        "current_inner_A": 997.4722242772766,
+        "current_shell_A": -999.9974678420398,
+        "net_current_savescalars_A": -2.525243564754,
+        "max_Az_Wb_per_m": 0.000301790198697
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.26,
+        "elmer_solver_real_s": 0.16,
+        "level_total_s": 0.432
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    },
+    {
+      "level": 2,
+      "h_m": 0.000125,
+      "elements": 17228,
+      "nodes": 8766,
+      "case_dir": "runs\\benchmarks\\coax_magnetostatic\\level2",
+      "values": {
+        "energy_per_length_elmer_J_per_m": 0.1230718951941,
+        "energy_per_length_python_J_per_m": 0.12307189519405673,
+        "L_per_length_H_per_m": 2.461437903882e-07,
+        "L_per_length_python_H_per_m": 2.4614379038811345e-07,
+        "B_phi_mid_gap_T": 0.0571091842084,
+        "B_profile_rms_error_rel": 0.0022375140193476293,
+        "current_inner_A": 999.3551158528664,
+        "current_shell_A": -999.9993735882272,
+        "net_current_savescalars_A": -0.6442577353627,
+        "max_Az_Wb_per_m": 0.0003023748735009
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.639,
+        "elmer_solver_real_s": 0.37,
+        "level_total_s": 0.852
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "quantity": "L_per_length_H_per_m",
+      "unit": "H/m",
+      "fem_finest": 2.461437903882e-07,
+      "analytic": 2.465453159698148e-07,
+      "analytic_key": "L_per_length_H_per_m",
+      "rel_error_finest": 0.0016286076254799576,
+      "observed_order": 1.9587098104103926,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.0005,
+          "elements": 1168,
+          "nodes": 623,
+          "value": 2.404869620336e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.024572983317016496
+        },
+        {
+          "level": 1,
+          "h_m": 0.00025,
+          "elements": 4437,
+          "nodes": 2295,
+          "value": 2.449845290184e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.006330629098651713,
+          "observed_order": 1.9566522427450443
+        },
+        {
+          "level": 2,
+          "h_m": 0.000125,
+          "elements": 17228,
+          "nodes": 8766,
+          "value": 2.461437903882e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.0016286076254799576,
+          "observed_order": 1.9587098104103926
+        }
+      ]
+    },
+    {
+      "quantity": "L_per_length_python_H_per_m",
+      "unit": "H/m",
+      "fem_finest": 2.4614379038811345e-07,
+      "analytic": 2.465453159698148e-07,
+      "analytic_key": "L_per_length_H_per_m",
+      "rel_error_finest": 0.0016286076258310337,
+      "observed_order": 1.9587098101266496,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.0005,
+          "elements": 1168,
+          "nodes": 623,
+          "value": 2.404869620335741e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.024572983317121495
+        },
+        {
+          "level": 1,
+          "h_m": 0.00025,
+          "elements": 4437,
+          "nodes": 2295,
+          "value": 2.4498452901837054e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.006330629098771315,
+          "observed_order": 1.9566522427239526
+        },
+        {
+          "level": 2,
+          "h_m": 0.000125,
+          "elements": 17228,
+          "nodes": 8766,
+          "value": 2.4614379038811345e-07,
+          "exact": 2.465453159698148e-07,
+          "rel_error": 0.0016286076258310337,
+          "observed_order": 1.9587098101266496
+        }
+      ]
+    },
+    {
+      "quantity": "B_phi_mid_gap_T",
+      "unit": "T",
+      "fem_finest": 0.0571091842084,
+      "analytic": 0.05714285714285715,
+      "analytic_key": "B_phi_mid_gap_T",
+      "rel_error_finest": 0.000589276353000108,
+      "observed_order": 2.3572106938503503,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.0005,
+          "elements": 1168,
+          "nodes": 623,
+          "value": 0.0564781924678,
+          "exact": 0.05714285714285715,
+          "rel_error": 0.011631631813500147
+        },
+        {
+          "level": 1,
+          "h_m": 0.00025,
+          "elements": 4437,
+          "nodes": 2295,
+          "value": 0.0569703241762,
+          "exact": 0.05714285714285715,
+          "rel_error": 0.0030193269165000587,
+          "observed_order": 1.9457546304786841
+        },
+        {
+          "level": 2,
+          "h_m": 0.000125,
+          "elements": 17228,
+          "nodes": 8766,
+          "value": 0.0571091842084,
+          "exact": 0.05714285714285715,
+          "rel_error": 0.000589276353000108,
+          "observed_order": 2.3572106938503503
+        }
+      ]
+    },
+    {
+      "quantity": "B_profile_rms_error_rel",
+      "unit": "1",
+      "fem_finest": 0.0022375140193476293,
+      "analytic": null,
+      "analytic_key": null,
+      "rel_error_finest": null,
+      "observed_order": 1.5977132846271564,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.0005,
+          "elements": 1168,
+          "nodes": 623,
+          "value": 0.015262985753546603
+        },
+        {
+          "level": 1,
+          "h_m": 0.00025,
+          "elements": 4437,
+          "nodes": 2295,
+          "value": 0.005472344431337784
+        },
+        {
+          "level": 2,
+          "h_m": 0.000125,
+          "elements": 17228,
+          "nodes": 8766,
+          "value": 0.0022375140193476293,
+          "observed_order": 1.5977132846271564,
+          "richardson_extrapolated": 0.0006413533097661857
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "inner_current_integral",
+      "value": 0.0006448841471335527,
+      "tolerance": 0.0013020833333333333,
+      "passed": true,
+      "description": "int J_z dA over the inner conductor (VTU elemental current density x triangle areas) vs I; tolerance = 2 x inscribed-polygon area deficit h^2/(6 a^2)"
+    },
+    {
+      "name": "shell_current_integral",
+      "value": 6.264117728278507e-07,
+      "tolerance": 0.0013020833333333333,
+      "passed": true,
+      "description": "int J_z dA over the shell vs -I (inner and outer polygon deficits nearly cancel)"
+    },
+    {
+      "name": "net_current",
+      "value": 0.0006442577353627001,
+      "tolerance": 0.0013020833333333333,
+      "passed": true,
+      "description": "SaveScalars whole-domain int J_z dA / I"
+    },
+    {
+      "name": "elmer_vs_python_energy",
+      "value": 3.515907699034106e-13,
+      "tolerance": 1e-06,
+      "passed": true,
+      "description": "numpy integration of 1/2 |curl Az|^2/mu0 over the VTU triangles vs Elmer CalcFields energy"
+    }
+  ],
+  "all_checks_passed": true,
+  "timing": {
+    "total_s": 1.862,
+    "per_level_s": [
+      0.578,
+      0.432,
+      0.852
+    ]
+  },
+  "tools": {
+    "elmersolver": {
+      "id": "elmersolver",
+      "name": "Elmer FEM ElmerSolver",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerSolver.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later (ElmerSolver), LGPL-2.1 (elmersolver library parts)",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "elmergrid": {
+      "id": "elmergrid",
+      "name": "Elmer FEM ElmerGrid",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerGrid.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "gmsh": {
+      "id": "gmsh",
+      "name": "Gmsh (python SDK)",
+      "found": true,
+      "path": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\gmsh.py",
+      "version": "4.15.2",
+      "revision": null,
+      "compiled": null,
+      "source": "python-module",
+      "licence": "GPL-2.0-or-later",
+      "home": null,
+      "notes": []
+    },
+    "python": {
+      "executable": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "version": "3.10.11",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "matplotlib": "3.10.9",
+        "gmsh": "4.15.2"
+      },
+      "platform": {
+        "system": "Windows",
+        "release": "10",
+        "machine": "AMD64"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "id": "evidence.coax_magnetostatic.analytic",
+      "kind": "analytical",
+      "description": "2-D magnetostatic coaxial conductor: closed-form reference. L' = mu0/(2 pi) [1/4 + ln(b/a) + S(b,c)] with S the uniform-shell internal term; B_phi = mu0 I/(2 pi r) in the gap.",
+      "source": {
+        "type": "textbook_formula",
+        "reference": "L' = mu0/(2 pi) [1/4 + ln(b/a) + S(b,c)] with S the uniform-shell internal term; B_phi = mu0 I/(2 pi r) in the gap."
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [],
+        "inputs": [
+          "assumption.coax_magnetostatic.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:51+08:00",
+      "artifacts": [],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.coax_magnetostatic.fem.level0",
+      "kind": "simulation",
+      "description": "2-D magnetostatic coaxial conductor: Elmer FEM level 0, h = 0.0005 m, 1168 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.coax_magnetostatic.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:51+08:00",
+      "artifacts": [
+        {
+          "uri": "level0/case.json",
+          "sha256": "379e49adaab1c84820a20ebc8d462dd8ac5ac4f9a106d28acd9d9669c5fb972b"
+        },
+        {
+          "uri": "level0/case.sif",
+          "sha256": "9530305a4737546b19590d0bdfb761ab1a4010053bcb4e1f07a997f02b1a50c2"
+        },
+        {
+          "uri": "level0/results.json",
+          "sha256": "5a102a532f31c2ef80d131d9033cf7d222a80b60af0de84ac3265e507c725acf"
+        },
+        {
+          "uri": "level0/elmersolver.log",
+          "sha256": "e538a0f9854f17b6af7c4acb0d4e2a28535589857003e8fca88fd3469429e166"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.coax_magnetostatic.fem.level1",
+      "kind": "simulation",
+      "description": "2-D magnetostatic coaxial conductor: Elmer FEM level 1, h = 0.00025 m, 4437 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.coax_magnetostatic.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:51+08:00",
+      "artifacts": [
+        {
+          "uri": "level1/case.json",
+          "sha256": "eba843fc36839458b33bfd97f42571e3a9eb4bfe677407746ffd8e4a22c7e2cd"
+        },
+        {
+          "uri": "level1/case.sif",
+          "sha256": "9530305a4737546b19590d0bdfb761ab1a4010053bcb4e1f07a997f02b1a50c2"
+        },
+        {
+          "uri": "level1/results.json",
+          "sha256": "ecf982acdd847bd5a81eac8f04c79d65fc3e641d22da148e8cd124c6c648293e"
+        },
+        {
+          "uri": "level1/elmersolver.log",
+          "sha256": "5f50bf179f9d3a7def9d4b3860e3c4cd68f46d413618a8ddcf4c0e6ecd336a7c"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.coax_magnetostatic.fem.level2",
+      "kind": "simulation",
+      "description": "2-D magnetostatic coaxial conductor: Elmer FEM level 2, h = 0.000125 m, 17228 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.coax_magnetostatic.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:51+08:00",
+      "artifacts": [
+        {
+          "uri": "level2/case.json",
+          "sha256": "805d99016f7b871198dac6d52a366cf1f464e34eb04f0cd0fb590050e8030628"
+        },
+        {
+          "uri": "level2/case.sif",
+          "sha256": "9530305a4737546b19590d0bdfb761ab1a4010053bcb4e1f07a997f02b1a50c2"
+        },
+        {
+          "uri": "level2/results.json",
+          "sha256": "632bdc11e0f6e4576f0db4469a320c26c6130303d14d5cbdb52830dd75d94350"
+        },
+        {
+          "uri": "level2/elmersolver.log",
+          "sha256": "14d06455257a455cfb6d1e1af0a6a89e4bbdb9b32b4574c083219357909af538"
+        }
+      ],
+      "review_status": "unreviewed"
+    }
+  ]
+}

@@ -1,0 +1,539 @@
+{
+  "schema": "aipe.field-simulation/benchmark-summary/0.1",
+  "package": {
+    "name": "aipe-fieldsim",
+    "version": "0.1.0"
+  },
+  "benchmark": "fin_3d_conduction",
+  "title": "3-D finned block (rectangular fin) with convection",
+  "description": "Aluminium plate fin t x L x w meshed with Gmsh tetrahedra; root at T_base, convective film on the remaining faces; Elmer HeatSolve (BiCGStabl/ILU1).",
+  "reference": "1-D fin with convective tip: theta/theta_b = [cosh m(L-x) + (h/mk) sinh m(L-x)]/[cosh mL + (h/mk) sinh mL], q = sqrt(hPkA) theta_b [sinh mL + (h/mk) cosh mL]/[cosh mL + (h/mk) sinh mL].",
+  "created_at": "2026-10-21T13:57:38+08:00",
+  "finished_at": "2026-10-21T13:57:48+08:00",
+  "parameters": {
+    "k_W_per_m_K": 200.0,
+    "h_W_per_m2_K": 25.0,
+    "thickness_m": 0.001,
+    "width_m": 0.04,
+    "length_m": 0.05,
+    "T_base_K": 350.0,
+    "T_inf_K": 300.0,
+    "density_kg_per_m3": 2700.0,
+    "heat_capacity_J_per_kg_K": 900.0,
+    "h0_m": 0.002
+  },
+  "analytic": {
+    "heat_rate_W": {
+      "value": 4.281101649846685,
+      "unit": "W"
+    },
+    "T_tip_K": {
+      "value": 337.18243684309607,
+      "unit": "K"
+    },
+    "fin_efficiency": {
+      "value": 0.8272660192940454,
+      "unit": "1"
+    },
+    "m_per_m": {
+      "value": 16.00781059358212,
+      "unit": "1/m"
+    },
+    "mL": {
+      "value": 0.8003905296791061,
+      "unit": "1"
+    },
+    "biot_number": {
+      "value": 6.25e-05,
+      "unit": "1"
+    }
+  },
+  "levels": [
+    {
+      "level": 0,
+      "h_m": 0.002,
+      "elements": 4291,
+      "nodes": 1459,
+      "case_dir": "runs\\benchmarks\\fin_3d_conduction\\level0",
+      "values": {
+        "heat_rate_W": 4.281270813250004,
+        "heat_rate_vtu_W": 4.281270813243948,
+        "T_tip_K": 337.1485508707,
+        "T_tip_centreline_K": 337.196815762,
+        "convective_area_m2": 0.00414,
+        "convective_area_expected_m2": 0.0041400000000000005,
+        "profile_rms_error_K": 0.016841854404520823,
+        "profile_rms_error_rel": 0.00033683708809041646,
+        "fin_efficiency": 0.827298707874397
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.395,
+        "elmer_solver_real_s": 0.14,
+        "level_total_s": 0.489
+      },
+      "warnings": []
+    },
+    {
+      "level": 1,
+      "h_m": 0.001,
+      "elements": 15678,
+      "nodes": 5219,
+      "case_dir": "runs\\benchmarks\\fin_3d_conduction\\level1",
+      "values": {
+        "heat_rate_W": 4.2810887772675,
+        "heat_rate_vtu_W": 4.281088777281605,
+        "T_tip_K": 337.1508233651,
+        "T_tip_centreline_K": 337.197336052,
+        "convective_area_m2": 0.004140000000001,
+        "convective_area_expected_m2": 0.0041400000000000005,
+        "profile_rms_error_K": 0.015826650130317674,
+        "profile_rms_error_rel": 0.0003165330026063535,
+        "fin_efficiency": 0.8272635318389306
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 1.158,
+        "elmer_solver_real_s": 0.3,
+        "level_total_s": 1.298
+      },
+      "warnings": []
+    },
+    {
+      "level": 2,
+      "h_m": 0.0005,
+      "elements": 91227,
+      "nodes": 25068,
+      "case_dir": "runs\\benchmarks\\fin_3d_conduction\\level2",
+      "values": {
+        "heat_rate_W": 4.281008451344998,
+        "heat_rate_vtu_W": 4.281008451306295,
+        "T_tip_K": 337.1510076622,
+        "T_tip_centreline_K": 337.198633988,
+        "convective_area_m2": 0.004139999999994,
+        "convective_area_expected_m2": 0.0041400000000000005,
+        "profile_rms_error_K": 0.01576667786485483,
+        "profile_rms_error_rel": 0.0003153335572970966,
+        "fin_efficiency": 0.8272480099229376
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 7.53,
+        "elmer_solver_real_s": 1.18,
+        "level_total_s": 7.835
+      },
+      "warnings": []
+    }
+  ],
+  "comparisons": [
+    {
+      "quantity": "heat_rate_W",
+      "unit": "W",
+      "fem_finest": 4.281008451344998,
+      "analytic": 4.281101649846685,
+      "analytic_key": "heat_rate_W",
+      "rel_error_finest": 2.1769747441290035e-05,
+      "observed_order": -2.8560056165723684,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.002,
+          "elements": 4291,
+          "nodes": 1459,
+          "value": 4.281270813250004,
+          "exact": 4.281101649846685,
+          "rel_error": 3.951398895772998e-05
+        },
+        {
+          "level": 1,
+          "h_m": 0.001,
+          "elements": 15678,
+          "nodes": 5219,
+          "value": 4.2810887772675,
+          "exact": 4.281101649846685,
+          "rel_error": 3.006838014733311e-06,
+          "observed_order": 3.7160444406576962
+        },
+        {
+          "level": 2,
+          "h_m": 0.0005,
+          "elements": 91227,
+          "nodes": 25068,
+          "value": 4.281008451344998,
+          "exact": 4.281101649846685,
+          "rel_error": 2.1769747441290035e-05,
+          "observed_order": -2.8560056165723684
+        }
+      ]
+    },
+    {
+      "quantity": "T_tip_K",
+      "unit": "K",
+      "fem_finest": 337.1510076622,
+      "analytic": 337.18243684309607,
+      "analytic_key": "T_tip_K",
+      "rel_error_finest": 9.321120397110106e-05,
+      "observed_order": 0.008435090598994242,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.002,
+          "elements": 4291,
+          "nodes": 1459,
+          "value": 337.1485508707,
+          "exact": 337.18243684309607,
+          "rel_error": 0.00010049744201789697
+        },
+        {
+          "level": 1,
+          "h_m": 0.001,
+          "elements": 15678,
+          "nodes": 5219,
+          "value": 337.1508233651,
+          "exact": 337.18243684309607,
+          "rel_error": 9.375778374478561e-05,
+          "observed_order": 0.10014840794107173
+        },
+        {
+          "level": 2,
+          "h_m": 0.0005,
+          "elements": 91227,
+          "nodes": 25068,
+          "value": 337.1510076622,
+          "exact": 337.18243684309607,
+          "rel_error": 9.321120397110106e-05,
+          "observed_order": 0.008435090598994242
+        }
+      ]
+    },
+    {
+      "quantity": "fin_efficiency",
+      "unit": "1",
+      "fem_finest": 0.8272480099229376,
+      "analytic": 0.8272660192940454,
+      "analytic_key": "fin_efficiency",
+      "rel_error_finest": 2.1769745992009462e-05,
+      "observed_order": -2.856005404724685,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.002,
+          "elements": 4291,
+          "nodes": 1459,
+          "value": 0.827298707874397,
+          "exact": 0.8272660192940454,
+          "rel_error": 3.951398895779935e-05
+        },
+        {
+          "level": 1,
+          "h_m": 0.001,
+          "elements": 15678,
+          "nodes": 5219,
+          "value": 0.8272635318389306,
+          "exact": 0.8272660192940454,
+          "rel_error": 3.006838256087628e-06,
+          "observed_order": 3.7160443248572963
+        },
+        {
+          "level": 2,
+          "h_m": 0.0005,
+          "elements": 91227,
+          "nodes": 25068,
+          "value": 0.8272480099229376,
+          "exact": 0.8272660192940454,
+          "rel_error": 2.1769745992009462e-05,
+          "observed_order": -2.856005404724685
+        }
+      ]
+    },
+    {
+      "quantity": "profile_rms_error_rel",
+      "unit": "1",
+      "fem_finest": 0.0003153335572970966,
+      "analytic": null,
+      "analytic_key": null,
+      "rel_error_finest": null,
+      "observed_order": 4.081330766208579,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 0.002,
+          "elements": 4291,
+          "nodes": 1459,
+          "value": 0.00033683708809041646
+        },
+        {
+          "level": 1,
+          "h_m": 0.001,
+          "elements": 15678,
+          "nodes": 5219,
+          "value": 0.0003165330026063535
+        },
+        {
+          "level": 2,
+          "h_m": 0.0005,
+          "elements": 91227,
+          "nodes": 25068,
+          "value": 0.0003153335572970966,
+          "observed_order": 4.081330766208579,
+          "richardson_extrapolated": 0.0003152582526047949
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "convective_area",
+      "value": 1.449374034638593e-12,
+      "tolerance": 1e-09,
+      "passed": true,
+      "description": "SaveScalars boundary area vs geometric area of the convective faces"
+    },
+    {
+      "name": "vtu_vs_savescalars_heat_rate",
+      "value": 9.040480783511075e-12,
+      "tolerance": 1e-06,
+      "passed": true,
+      "description": "independent numpy boundary integral from the VTU vs SaveScalars"
+    }
+  ],
+  "all_checks_passed": true,
+  "timing": {
+    "total_s": 9.622,
+    "per_level_s": [
+      0.489,
+      1.298,
+      7.835
+    ]
+  },
+  "tools": {
+    "elmersolver": {
+      "id": "elmersolver",
+      "name": "Elmer FEM ElmerSolver",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerSolver.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later (ElmerSolver), LGPL-2.1 (elmersolver library parts)",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "elmergrid": {
+      "id": "elmergrid",
+      "name": "Elmer FEM ElmerGrid",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerGrid.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "gmsh": {
+      "id": "gmsh",
+      "name": "Gmsh (python SDK)",
+      "found": true,
+      "path": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\gmsh.py",
+      "version": "4.15.2",
+      "revision": null,
+      "compiled": null,
+      "source": "python-module",
+      "licence": "GPL-2.0-or-later",
+      "home": null,
+      "notes": []
+    },
+    "python": {
+      "executable": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "version": "3.10.11",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "matplotlib": "3.10.9",
+        "gmsh": "4.15.2"
+      },
+      "platform": {
+        "system": "Windows",
+        "release": "10",
+        "machine": "AMD64"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "id": "evidence.fin_3d_conduction.analytic",
+      "kind": "analytical",
+      "description": "3-D finned block (rectangular fin) with convection: closed-form reference. 1-D fin with convective tip: theta/theta_b = [cosh m(L-x) + (h/mk) sinh m(L-x)]/[cosh mL + (h/mk) sinh mL], q = sqrt(hPkA) theta_b [sinh mL + (h/mk) cosh mL]/[cosh mL + (h/mk) sinh mL].",
+      "source": {
+        "type": "textbook_formula",
+        "reference": "1-D fin with convective tip: theta/theta_b = [cosh m(L-x) + (h/mk) sinh m(L-x)]/[cosh mL + (h/mk) sinh mL], q = sqrt(hPkA) theta_b [sinh mL + (h/mk) cosh mL]/[cosh mL + (h/mk) sinh mL]."
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [],
+        "inputs": [
+          "assumption.fin_3d_conduction.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:38+08:00",
+      "artifacts": [],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.fin_3d_conduction.fem.level0",
+      "kind": "simulation",
+      "description": "3-D finned block (rectangular fin) with convection: Elmer FEM level 0, h = 0.002 m, 4291 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.fin_3d_conduction.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:38+08:00",
+      "artifacts": [
+        {
+          "uri": "level0/case.json",
+          "sha256": "91c1bd18eca9d8107452410e37fc5bba6855ee9c7f5cc7c2277a75a2c802fc19"
+        },
+        {
+          "uri": "level0/case.sif",
+          "sha256": "816d0c53138f3f48fe4c81f8396d602c93eb4b87e40ae8fae9637177b5720b9e"
+        },
+        {
+          "uri": "level0/results.json",
+          "sha256": "3ac05fa8544365fc782affc732af6ae25fe0b9012a4008bfa3e22c522befde40"
+        },
+        {
+          "uri": "level0/elmersolver.log",
+          "sha256": "9a05a7d828b49d6e2d32c41158911abab7f583ed7501dae51bfbeeac7877fc8b"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.fin_3d_conduction.fem.level1",
+      "kind": "simulation",
+      "description": "3-D finned block (rectangular fin) with convection: Elmer FEM level 1, h = 0.001 m, 15678 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.fin_3d_conduction.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:38+08:00",
+      "artifacts": [
+        {
+          "uri": "level1/case.json",
+          "sha256": "b039044535f0661bf82b41e054453e4c2f09757ebcd9b7f997962ae799aa4804"
+        },
+        {
+          "uri": "level1/case.sif",
+          "sha256": "816d0c53138f3f48fe4c81f8396d602c93eb4b87e40ae8fae9637177b5720b9e"
+        },
+        {
+          "uri": "level1/results.json",
+          "sha256": "05e0accd3c7ce1920e2494ce76d2e9d73190f3c21dc1a0f37188e931e66c9f79"
+        },
+        {
+          "uri": "level1/elmersolver.log",
+          "sha256": "cf4ba46f330b6e143385a4cdbf7608a818eeae6c1d2caf3c5fcba9d6b8e8d78f"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.fin_3d_conduction.fem.level2",
+      "kind": "simulation",
+      "description": "3-D finned block (rectangular fin) with convection: Elmer FEM level 2, h = 0.0005 m, 91227 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.fin_3d_conduction.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T13:57:38+08:00",
+      "artifacts": [
+        {
+          "uri": "level2/case.json",
+          "sha256": "6fd7e177c0f189e6d241d694e4f45854562462b7adbd3b41d59cc5780e31f646"
+        },
+        {
+          "uri": "level2/case.sif",
+          "sha256": "816d0c53138f3f48fe4c81f8396d602c93eb4b87e40ae8fae9637177b5720b9e"
+        },
+        {
+          "uri": "level2/results.json",
+          "sha256": "2b824d0b59cfe848996412c3eb6106b687c4176ed68ec2dd6353aa089f29eea0"
+        },
+        {
+          "uri": "level2/elmersolver.log",
+          "sha256": "190a460dc7ebccb8ed168cfca3dcc5416932c9033c1b2bec0841546c99b02ceb"
+        }
+      ],
+      "review_status": "unreviewed"
+    }
+  ]
+}

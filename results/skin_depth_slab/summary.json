@@ -1,0 +1,593 @@
+{
+  "schema": "aipe.field-simulation/benchmark-summary/0.1",
+  "package": {
+    "name": "aipe-fieldsim",
+    "version": "0.1.0"
+  },
+  "benchmark": "skin_depth_slab",
+  "title": "100 kHz eddy-current skin effect in a copper slab",
+  "description": "Harmonic MgDyn2D (Elmer MagnetoDynamics2DHarmonic) on a 1 mm copper slab with imposed vector-potential difference; loss per unit depth and current-density profile versus the closed form.",
+  "reference": "Az(x) = -A0 sinh(kx)/sinh(kd), k=(1+j)/delta, delta = sqrt(2/(omega mu0 sigma)); P' = omega^2 sigma A0^2/2 * delta (sinh u - sin u)/(cosh u - cos u), u = 2d/delta.",
+  "created_at": "2026-10-21T14:02:53+08:00",
+  "finished_at": "2026-10-21T14:02:54+08:00",
+  "parameters": {
+    "d_m": 0.0005,
+    "strip_height_m": 0.0001,
+    "frequency_Hz": 100000.0,
+    "conductivity_S_per_m": 58000000.0,
+    "A0_Wb_per_m": 1e-06,
+    "nx0": 25,
+    "ny": 5
+  },
+  "analytic": {
+    "skin_depth_m": {
+      "value": 0.00020898067849388921,
+      "unit": "m"
+    },
+    "loss_per_depth_W_per_m": {
+      "value": 0.24350500277633233,
+      "unit": "W/m"
+    },
+    "loss_per_area_W_per_m2": {
+      "value": 2435.050027763323,
+      "unit": "W/m^2"
+    },
+    "loss_per_depth_numeric_W_per_m": {
+      "value": 0.24350500282127296,
+      "unit": "W/m"
+    },
+    "J_surface_A_per_m2": {
+      "value": 36442474.781641595,
+      "unit": "A/m^2"
+    },
+    "J_centre_A_per_m2": {
+      "value": 0.0,
+      "unit": "A/m^2"
+    },
+    "thickness_over_skin_depth": {
+      "value": 4.785131368157755,
+      "unit": "1"
+    }
+  },
+  "levels": [
+    {
+      "level": 0,
+      "h_m": 4e-05,
+      "elements": 125,
+      "nodes": 156,
+      "case_dir": "runs\\benchmarks\\skin_depth_slab\\level0",
+      "values": {
+        "loss_per_depth_W_per_m": 0.244342822178,
+        "loss_per_depth_joule_integral_W_per_m": 0.244342822178,
+        "loss_per_depth_python_W_per_m": 0.24434282217799905,
+        "loss_per_depth_from_J_W_per_m": 0.24290921547232133,
+        "J_surface_A_per_m2": 36442474.7816,
+        "J_centre_A_per_m2": 1.9629225168520155e-08,
+        "J_profile_rms_error_rel": 0.0010935210885002979,
+        "max_abs_Az_re_Wb_per_m": 1e-06,
+        "elements_per_skin_depth": 5.22451696234723
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.153,
+        "elmer_solver_real_s": 0.12,
+        "level_total_s": 0.589
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    },
+    {
+      "level": 1,
+      "h_m": 2e-05,
+      "elements": 250,
+      "nodes": 306,
+      "case_dir": "runs\\benchmarks\\skin_depth_slab\\level1",
+      "values": {
+        "loss_per_depth_W_per_m": 0.2437140762564,
+        "loss_per_depth_joule_integral_W_per_m": 0.2437140762564,
+        "loss_per_depth_python_W_per_m": 0.24371407625637392,
+        "loss_per_depth_from_J_W_per_m": 0.24335483190625928,
+        "J_surface_A_per_m2": 36442474.7816,
+        "J_centre_A_per_m2": 8.96397978067398e-09,
+        "J_profile_rms_error_rel": 0.00027285527739934505,
+        "max_abs_Az_re_Wb_per_m": -1e-06,
+        "elements_per_skin_depth": 10.44903392469446
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.144,
+        "elmer_solver_real_s": 0.12,
+        "level_total_s": 0.313
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    },
+    {
+      "level": 2,
+      "h_m": 1e-05,
+      "elements": 500,
+      "nodes": 606,
+      "case_dir": "runs\\benchmarks\\skin_depth_slab\\level2",
+      "values": {
+        "loss_per_depth_W_per_m": 0.2435572473494,
+        "loss_per_depth_joule_integral_W_per_m": 0.2435572473494,
+        "loss_per_depth_python_W_per_m": 0.2435572473493957,
+        "loss_per_depth_from_J_W_per_m": 0.24346738355044467,
+        "J_surface_A_per_m2": 36442474.7816,
+        "J_centre_A_per_m2": 2.5441405798799754e-08,
+        "J_profile_rms_error_rel": 6.817219430478511e-05,
+        "max_abs_Az_re_Wb_per_m": 1e-06,
+        "elements_per_skin_depth": 20.89806784938892
+      },
+      "timing": {
+        "mesh_grid_and_solve_s": 0.177,
+        "elmer_solver_real_s": 0.13,
+        "level_total_s": 0.358
+      },
+      "warnings": [
+        "WARNING:: GetPermittivity: Permittivity not defined in material, defaulting to that of vacuum"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "quantity": "loss_per_depth_W_per_m",
+      "unit": "W/m",
+      "fem_finest": 0.2435572473494,
+      "analytic": 0.24350500277633233,
+      "analytic_key": "loss_per_depth_W_per_m",
+      "rel_error_finest": 0.00021455236020621684,
+      "observed_order": 2.0006569854455023,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 4e-05,
+          "elements": 125,
+          "nodes": 156,
+          "value": 0.244342822178,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.003440666073038453
+        },
+        {
+          "level": 1,
+          "h_m": 2e-05,
+          "elements": 250,
+          "nodes": 306,
+          "value": 0.2437140762564,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.0008586003477706678,
+          "observed_order": 2.002629218735379
+        },
+        {
+          "level": 2,
+          "h_m": 1e-05,
+          "elements": 500,
+          "nodes": 606,
+          "value": 0.2435572473494,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.00021455236020621684,
+          "observed_order": 2.0006569854455023
+        }
+      ]
+    },
+    {
+      "quantity": "loss_per_depth_python_W_per_m",
+      "unit": "W/m",
+      "fem_finest": 0.2435572473493957,
+      "analytic": 0.24350500277633233,
+      "analytic_key": "loss_per_depth_W_per_m",
+      "rel_error_finest": 0.00021455236018854938,
+      "observed_order": 2.0006569853844596,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 4e-05,
+          "elements": 125,
+          "nodes": 156,
+          "value": 0.24434282217799905,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.0034406660730345777
+        },
+        {
+          "level": 1,
+          "h_m": 2e-05,
+          "elements": 250,
+          "nodes": 306,
+          "value": 0.24371407625637392,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.0008586003476636372,
+          "observed_order": 2.0026292189135964
+        },
+        {
+          "level": 2,
+          "h_m": 1e-05,
+          "elements": 500,
+          "nodes": 606,
+          "value": 0.2435572473493957,
+          "exact": 0.24350500277633233,
+          "rel_error": 0.00021455236018854938,
+          "observed_order": 2.0006569853844596
+        }
+      ]
+    },
+    {
+      "quantity": "J_surface_A_per_m2",
+      "unit": "A/m^2",
+      "fem_finest": 36442474.7816,
+      "analytic": 36442474.781641595,
+      "analytic_key": "J_surface_A_per_m2",
+      "rel_error_finest": 1.141431577352167e-12,
+      "observed_order": 0.0,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 4e-05,
+          "elements": 125,
+          "nodes": 156,
+          "value": 36442474.7816,
+          "exact": 36442474.781641595,
+          "rel_error": 1.141431577352167e-12
+        },
+        {
+          "level": 1,
+          "h_m": 2e-05,
+          "elements": 250,
+          "nodes": 306,
+          "value": 36442474.7816,
+          "exact": 36442474.781641595,
+          "rel_error": 1.141431577352167e-12,
+          "observed_order": 0.0
+        },
+        {
+          "level": 2,
+          "h_m": 1e-05,
+          "elements": 500,
+          "nodes": 606,
+          "value": 36442474.7816,
+          "exact": 36442474.781641595,
+          "rel_error": 1.141431577352167e-12,
+          "observed_order": 0.0
+        }
+      ]
+    },
+    {
+      "quantity": "J_centre_A_per_m2",
+      "unit": "A/m^2",
+      "fem_finest": 2.5441405798799754e-08,
+      "analytic": 0.0,
+      "analytic_key": "J_centre_A_per_m2",
+      "rel_error_finest": 2.5441405798799754e-08,
+      "observed_order": -1.5049670910691169,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 4e-05,
+          "elements": 125,
+          "nodes": 156,
+          "value": 1.9629225168520155e-08,
+          "exact": 0.0,
+          "rel_error": 1.9629225168520155e-08
+        },
+        {
+          "level": 1,
+          "h_m": 2e-05,
+          "elements": 250,
+          "nodes": 306,
+          "value": 8.96397978067398e-09,
+          "exact": 0.0,
+          "rel_error": 8.96397978067398e-09,
+          "observed_order": 1.130791926112894
+        },
+        {
+          "level": 2,
+          "h_m": 1e-05,
+          "elements": 500,
+          "nodes": 606,
+          "value": 2.5441405798799754e-08,
+          "exact": 0.0,
+          "rel_error": 2.5441405798799754e-08,
+          "observed_order": -1.5049670910691169
+        }
+      ]
+    },
+    {
+      "quantity": "J_profile_rms_error_rel",
+      "unit": "1",
+      "fem_finest": 6.817219430478511e-05,
+      "analytic": null,
+      "analytic_key": null,
+      "rel_error_finest": null,
+      "observed_order": 2.003402982331447,
+      "levels": [
+        {
+          "level": 0,
+          "h_m": 4e-05,
+          "elements": 125,
+          "nodes": 156,
+          "value": 0.0010935210885002979
+        },
+        {
+          "level": 1,
+          "h_m": 2e-05,
+          "elements": 250,
+          "nodes": 306,
+          "value": 0.00027285527739934505
+        },
+        {
+          "level": 2,
+          "h_m": 1e-05,
+          "elements": 500,
+          "nodes": 606,
+          "value": 6.817219430478511e-05,
+          "observed_order": 2.003402982331447,
+          "richardson_extrapolated": 1.5865658646824037e-07
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "elmer_vs_python_loss",
+      "value": 1.7663667442631242e-14,
+      "tolerance": 1e-06,
+      "passed": true,
+      "description": "numpy integral of elemental Joule heating vs Elmer eddy current power"
+    },
+    {
+      "name": "savescalars_int_vs_res",
+      "value": 0.0,
+      "tolerance": 1e-06,
+      "passed": true,
+      "description": "SaveScalars int(Joule Heating e) vs result scalar"
+    },
+    {
+      "name": "joule_vs_current_density",
+      "value": 0.0003689637649189965,
+      "tolerance": 0.0011448741105263656,
+      "passed": true,
+      "description": "sum |J_e|^2/(2 sigma) A_e from the element-averaged current density vs Elmer eddy current power (Gauss quadrature vs element average, tolerance 0.5 (h/delta)^2; confirms the peak-phasor/time-average convention)"
+    }
+  ],
+  "all_checks_passed": true,
+  "timing": {
+    "total_s": 1.269,
+    "per_level_s": [
+      0.589,
+      0.313,
+      0.358
+    ]
+  },
+  "tools": {
+    "elmersolver": {
+      "id": "elmersolver",
+      "name": "Elmer FEM ElmerSolver",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerSolver.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later (ElmerSolver), LGPL-2.1 (elmersolver library parts)",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "elmergrid": {
+      "id": "elmergrid",
+      "name": "Elmer FEM ElmerGrid",
+      "found": true,
+      "path": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64\\bin\\ElmerGrid.exe",
+      "version": "9.0",
+      "revision": "Release",
+      "compiled": "2026-01-20",
+      "source": "workspace-tools",
+      "licence": "GPL-2.0-or-later",
+      "home": "D:\\Cursor Workspace\\AIPE-Full-Ecosystem-Integration\\tools\\ElmerFEM-nogui-nompi-Windows-AMD64",
+      "notes": []
+    },
+    "gmsh": {
+      "id": "gmsh",
+      "name": "Gmsh (python SDK)",
+      "found": true,
+      "path": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\gmsh.py",
+      "version": "4.15.2",
+      "revision": null,
+      "compiled": null,
+      "source": "python-module",
+      "licence": "GPL-2.0-or-later",
+      "home": null,
+      "notes": []
+    },
+    "python": {
+      "executable": "C:\\Users\\Zhongnan Qian\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "version": "3.10.11",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "matplotlib": "3.10.9",
+        "gmsh": "4.15.2"
+      },
+      "platform": {
+        "system": "Windows",
+        "release": "10",
+        "machine": "AMD64"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "id": "evidence.skin_depth_slab.analytic",
+      "kind": "analytical",
+      "description": "100 kHz eddy-current skin effect in a copper slab: closed-form reference. Az(x) = -A0 sinh(kx)/sinh(kd), k=(1+j)/delta, delta = sqrt(2/(omega mu0 sigma)); P' = omega^2 sigma A0^2/2 * delta (sinh u - sin u)/(cosh u - cos u), u = 2d/delta.",
+      "source": {
+        "type": "textbook_formula",
+        "reference": "Az(x) = -A0 sinh(kx)/sinh(kd), k=(1+j)/delta, delta = sqrt(2/(omega mu0 sigma)); P' = omega^2 sigma A0^2/2 * delta (sinh u - sin u)/(cosh u - cos u), u = 2d/delta."
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [],
+        "inputs": [
+          "assumption.skin_depth_slab.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:53+08:00",
+      "artifacts": [],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.skin_depth_slab.fem.level0",
+      "kind": "simulation",
+      "description": "100 kHz eddy-current skin effect in a copper slab: Elmer FEM level 0, h = 4e-05 m, 125 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.skin_depth_slab.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:53+08:00",
+      "artifacts": [
+        {
+          "uri": "level0/case.json",
+          "sha256": "0c494274296f3fe4bcc90a6b07aaf07755f0a76d74466db4c731856821b3dbab"
+        },
+        {
+          "uri": "level0/case.sif",
+          "sha256": "27644db7ea6d9fbe692a32345e29f0fe6c56493f9d8047dd3842bde23a080f13"
+        },
+        {
+          "uri": "level0/results.json",
+          "sha256": "ef0b70796ff1b042dcc9b5cf0d80d0c6d74698bec6f7c7edc4544621b1a23cc4"
+        },
+        {
+          "uri": "level0/elmersolver.log",
+          "sha256": "5de0cb972ced1cb629bd603ba6cc2893e0e7e0e9e989bbf7b966f78536f7c4c7"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.skin_depth_slab.fem.level1",
+      "kind": "simulation",
+      "description": "100 kHz eddy-current skin effect in a copper slab: Elmer FEM level 1, h = 2e-05 m, 250 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.skin_depth_slab.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:53+08:00",
+      "artifacts": [
+        {
+          "uri": "level1/case.json",
+          "sha256": "cd6cb4ac28cbbc83dc40e6bccfcccb6178a61a424065cfd6ae4d8dfa4fce95ae"
+        },
+        {
+          "uri": "level1/case.sif",
+          "sha256": "27644db7ea6d9fbe692a32345e29f0fe6c56493f9d8047dd3842bde23a080f13"
+        },
+        {
+          "uri": "level1/results.json",
+          "sha256": "2fa80cae4fa19087badff9adf0253e10894d693c68f63c462c9f67c259f6d4ef"
+        },
+        {
+          "uri": "level1/elmersolver.log",
+          "sha256": "6a3709154e948bc51377e4d6b452d35820040b34a9364769155c5ed2473e1e61"
+        }
+      ],
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "evidence.skin_depth_slab.fem.level2",
+      "kind": "simulation",
+      "description": "100 kHz eddy-current skin effect in a copper slab: Elmer FEM level 2, h = 1e-05 m, 500 bulk elements.",
+      "source": {
+        "type": "computation",
+        "reference": "Elmer FEM case directory (case.json)"
+      },
+      "provenance": {
+        "activity": "aipe_fieldsim run",
+        "tools": [
+          {
+            "id": "elmersolver",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerSolver"
+          },
+          {
+            "id": "elmergrid",
+            "version": "9.0",
+            "name": "Elmer FEM ElmerGrid"
+          },
+          {
+            "id": "gmsh",
+            "version": "4.15.2",
+            "name": "Gmsh (python SDK)"
+          }
+        ],
+        "inputs": [
+          "assumption.skin_depth_slab.parameters"
+        ]
+      },
+      "timestamp": "2026-10-21T14:02:53+08:00",
+      "artifacts": [
+        {
+          "uri": "level2/case.json",
+          "sha256": "86b1d0d4b015e0183d5467049f6af10f182ff4d853576313e8f3de1a27d9c64a"
+        },
+        {
+          "uri": "level2/case.sif",
+          "sha256": "27644db7ea6d9fbe692a32345e29f0fe6c56493f9d8047dd3842bde23a080f13"
+        },
+        {
+          "uri": "level2/results.json",
+          "sha256": "48d3d18f0d70a020be7a353532adc72ff2846279ea5ebfa7473fae54bac6ea77"
+        },
+        {
+          "uri": "level2/elmersolver.log",
+          "sha256": "734158a9b070f8a0bc0ca9ffa314b254394fa538f64aa276de38b4d979022c3d"
+        }
+      ],
+      "review_status": "unreviewed"
+    }
+  ]
+}

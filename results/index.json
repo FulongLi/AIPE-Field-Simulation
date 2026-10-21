@@ -1,0 +1,54 @@
+{
+  "benchmarks": [
+    {
+      "name": "coax_magnetostatic",
+      "title": "2-D magnetostatic coaxial conductor",
+      "summary": "coax_magnetostatic/summary.json",
+      "created_at": "2026-10-21T14:02:51+08:00"
+    },
+    {
+      "name": "fin_3d_conduction",
+      "title": "3-D finned block (rectangular fin) with convection",
+      "summary": "fin_3d_conduction/summary.json",
+      "created_at": "2026-10-21T13:57:38+08:00"
+    },
+    {
+      "name": "skin_depth_slab",
+      "title": "100 kHz eddy-current skin effect in a copper slab",
+      "summary": "skin_depth_slab/summary.json",
+      "created_at": "2026-10-21T14:02:53+08:00"
+    },
+    {
+      "name": "slab_convection",
+      "title": "Steady conduction slab with convective boundary",
+      "summary": "slab_convection/summary.json",
+      "created_at": "2026-10-21T13:57:34+08:00"
+    }
+  ],
+  "models": [
+    {
+      "name": "heatsink_h25",
+      "title": "3-D finned heat sink with two TO-247 sources",
+      "summary": "heatsink_h25/summary.json",
+      "created_at": "2026-10-21T13:59:04+08:00"
+    },
+    {
+      "name": "heatsink_h80",
+      "title": "3-D finned heat sink with two TO-247 sources",
+      "summary": "heatsink_h80/summary.json",
+      "created_at": "2026-10-21T13:59:18+08:00"
+    },
+    {
+      "name": "transformer",
+      "title": "2-D E-core transformer window (leakage, magnetising, homogenised AC loss)",
+      "summary": "transformer/summary.json",
+      "created_at": "2026-10-21T13:57:48+08:00"
+    },
+    {
+      "name": "transformer_interleaved",
+      "title": "2-D E-core transformer window (leakage, magnetising, homogenised AC loss)",
+      "summary": "transformer_interleaved/summary.json",
+      "created_at": "2026-10-21T13:58:53+08:00"
+    }
+  ]
+}

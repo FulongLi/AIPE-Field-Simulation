@@ -5,22 +5,43 @@ imprinted on the base bottom as uniform heat-flux boundaries; a convective film 
 other exposed face (fins, base top between fins, base edges); the uncovered bottom is adiabatic by
 default (board side). Reported: hotspot temperature, mean footprint temperatures, thermal resistances
 and an energy-conservation check (convective heat out = 40 W in), with a mesh-refinement study.
+
+The model composes the package's stages: geometry (:func:`aipe_fieldsim.geometry.finned_heatsink`),
+materials (:mod:`aipe_fieldsim.materials`), physics (:meth:`HeatSinkModel.problem`, solver independent),
+Elmer execution (:class:`aipe_fieldsim.elmer.ElmerCase`) and post-processing/checks.
 """
 from __future__ import annotations
 
 import time
 from pathlib import Path
+from typing import Callable, Optional
 
 import numpy as np
 
 from ..elmer import ElmerCase
 from ..evidence import assumption_evidence, simulation_evidence
+from ..geometry import finned_heatsink
 from ..hashing import artifact_record
-from ..meshing import center, generate, gmsh_session, set_mesh_size, write_msh2
+from ..materials import get_material
+from ..meshing import generate, gmsh_session, set_mesh_size, write_msh2
+from ..physics import Adiabatic, Convection, HeatFlux, SteadyHeatConduction
 from ..plots import boundary_tri_plot
 from ..postprocess import boundary_integral, convergence_table
-from ..sif import Section, Sif, header, heat_solver, result_output, save_scalars, simulation
+from ..sif import Section, Sif, header, heat_conduction_sections, heat_solver, result_output, save_scalars, simulation
 from .base import Model
+
+_ALUMINIUM = get_material("aluminium")
+HEATSINK_DEFAULTS = {
+    "base_length_m": 100.0e-3, "base_width_m": 60.0e-3, "base_thickness_m": 6.0e-3,
+    "fin_count": 8, "fin_thickness_m": 2.0e-3, "fin_height_m": 25.0e-3,
+    "footprint_length_m": 16.0e-3, "footprint_width_m": 21.0e-3, "footprint_offset_m": 20.0e-3,
+    "device_power_W": 20.0, "h_W_per_m2_K": 25.0, "T_ambient_K": 300.0, "bottom_convective": False,
+    "k_W_per_m_K": _ALUMINIUM.thermal_conductivity_W_per_m_K, "density_kg_per_m3": _ALUMINIUM.density_kg_per_m3,
+    "heat_capacity_J_per_kg_K": _ALUMINIUM.heat_capacity_J_per_kg_K,
+    "h_levels_m": [3.0e-3, 2.0e-3, 1.4e-3],
+}
+# SaveScalars mask keyword per boundary condition
+_MASKS = {"footprint_1": "Fp1 Side", "footprint_2": "Fp2 Side", "convective": "Conv Side"}
 
 
 class HeatSinkModel(Model):
@@ -31,66 +52,43 @@ class HeatSinkModel(Model):
                    "and an energy-conservation check.")
 
     def default_params(self) -> dict:
-        return {
-            "base_length_m": 100.0e-3, "base_width_m": 60.0e-3, "base_thickness_m": 6.0e-3,
-            "fin_count": 8, "fin_thickness_m": 2.0e-3, "fin_height_m": 25.0e-3,
-            "footprint_length_m": 16.0e-3, "footprint_width_m": 21.0e-3, "footprint_offset_m": 20.0e-3,
-            "device_power_W": 20.0, "h_W_per_m2_K": 25.0, "T_ambient_K": 300.0, "bottom_convective": False,
-            "k_W_per_m_K": 200.0, "density_kg_per_m3": 2700.0, "heat_capacity_J_per_kg_K": 900.0,
-            "h_levels_m": [3.0e-3, 2.0e-3, 1.4e-3],
-        }
+        return dict(HEATSINK_DEFAULTS)
+
+    def problem(self) -> SteadyHeatConduction:
+        """Materials, sources and boundary conditions, by physical-group name (solver independent)."""
+        p = self.params
+        material = _ALUMINIUM.with_(thermal_conductivity_W_per_m_K=p["k_W_per_m_K"], density_kg_per_m3=p["density_kg_per_m3"],
+                                    heat_capacity_J_per_kg_K=p["heat_capacity_J_per_kg_K"])
+        q_dev = p["device_power_W"]
+        fp_area = p["footprint_length_m"] * p["footprint_width_m"]
+        flux = q_dev / fp_area
+        bcs = [
+            HeatFlux("footprint_1", ("footprint_1",), flux, note=f"{q_dev} W over {fp_area*1e6:.0f} mm^2"),
+            HeatFlux("footprint_2", ("footprint_2",), flux),
+            Convection("convective", ("convective", "bottom") if p["bottom_convective"] else ("convective",),
+                       p["h_W_per_m2_K"], p["T_ambient_K"]),
+        ]
+        if not p["bottom_convective"]:
+            bcs.append(Adiabatic("bottom_adiabatic", ("bottom",), note="uncovered bottom: natural BC = adiabatic"))
+        return SteadyHeatConduction({"heatsink": material}, bcs)
 
     def _write_mesh(self, path: Path, hmax: float) -> dict:
-        p = self.params
-        Lx, Ly, tb = p["base_length_m"], p["base_width_m"], p["base_thickness_m"]
-        nf, tf, hf = int(p["fin_count"]), p["fin_thickness_m"], p["fin_height_m"]
-        fl, fw, off = p["footprint_length_m"], p["footprint_width_m"], p["footprint_offset_m"]
         with gmsh_session("heatsink") as gmsh:
-            occ = gmsh.model.occ
-            base = occ.addBox(0, 0, 0, Lx, Ly, tb)
-            fins = []
-            pitch = (Lx - tf) / (nf - 1) if nf > 1 else 0.0
-            for i in range(nf):
-                fins.append(occ.addBox(i * pitch, 0, tb, tf, Ly, hf))
-            solid, _ = occ.fuse([(3, base)], [(3, f) for f in fins])
-            fp = []
-            for sign in (-1, 1):
-                xc = Lx / 2 + sign * off
-                fp.append(occ.addRectangle(xc - fl / 2, Ly / 2 - fw / 2, 0.0, fl, fw))
-            out, _ = occ.fragment(solid, [(2, f) for f in fp])
-            occ.synchronize()
-            volumes = [t for d, t in gmsh.model.getEntities(3)]
-            gmsh.model.addPhysicalGroup(3, volumes, 1, "heatsink")
-            groups = {"footprint_1": [], "footprint_2": [], "bottom": [], "convective": []}
-            for dim, tag in gmsh.model.getBoundary([(3, v) for v in volumes], oriented=False, combined=True):
-                c = center(gmsh, dim, tag)
-                if abs(c[2]) < 1e-9:
-                    for n, sign in enumerate((-1, 1), start=1):
-                        xc = Lx / 2 + sign * off
-                        if abs(c[0] - xc) < fl / 2 and abs(c[1] - Ly / 2) < fw / 2:
-                            groups[f"footprint_{n}"].append(tag)
-                            break
-                    else:
-                        groups["bottom"].append(tag)
-                else:
-                    groups["convective"].append(tag)
-            names = {}
-            for n, name in enumerate(("footprint_1", "footprint_2", "convective", "bottom"), start=1):
-                gmsh.model.addPhysicalGroup(2, groups[name], n, name)
-                names[name] = n
+            groups = finned_heatsink(gmsh, self.params)
             set_mesh_size(gmsh, hmax, hmax / 2)
             stats = generate(gmsh, 3)
             write_msh2(gmsh, path)
-        stats["physical"] = names
+        stats["physical"] = groups["boundaries"]
         return stats
 
-    def run(self, levels=(0, 1)) -> dict:
+    def run(self, levels=(0, 1), progress: Optional[Callable[[str], None]] = None) -> dict:
         p = self.params
         t0 = time.perf_counter()
         hc, t_amb, q_dev = p["h_W_per_m2_K"], p["T_ambient_K"], p["device_power_W"]
         fp_area = p["footprint_length_m"] * p["footprint_width_m"]
         flux = q_dev / fp_area
         q_total = 2 * q_dev
+        problem = self.problem()
         tool_attr = self.tools.attributions()
         evidence = [assumption_evidence(f"assumption.{self.name}.parameters",
                                         f"Heat sink geometry, h = {hc} W/m^2/K film coefficient (supplied value, not a CFD result), "
@@ -104,10 +102,13 @@ class HeatSinkModel(Model):
             case = ElmerCase(self.workdir / f"h{hc:g}_level{lvl}", self.tools, name=f"{self.name}-h{hc:g}-level{lvl}")
             case.set_mesh_from_msh(lambda path: self._write_mesh(path, hmax))
             bids = case.names["boundaries"]
+            problem.check(case.names["bodies"], bids)
+            if progress:
+                progress(f"level {lvl}: h = {hmax*1e3:g} mm, {case.mesh_info['bulk_elements']} tetrahedra, "
+                         f"{case.mesh_info['nodes']} nodes; running ElmerSolver")
             sif = Sif()
             sif.add(header())
             sif.add(simulation("Cartesian 3D"))
-            sif.add(Section("Body", 1, Name='"heatsink"', Equation=1, Material=1))
             sif.add(Section("Equation", 1, **{"Active Solvers": [1, 2, 3]}))
             sif.add(heat_solver(1, linear_system="iterative"))
             sif.add(save_scalars(2, "scalars.dat", [
@@ -118,17 +119,8 @@ class HeatSinkModel(Model):
                 ("Temperature", "boundary max", "Fp1 Side"), ("Temperature", "boundary max", "Fp2 Side"),
             ]))
             sif.add(result_output(3, "heatsink"))
-            sif.add(Section("Material", 1, Name='"aluminium"', **{"Heat Conductivity": p["k_W_per_m_K"], "Density": p["density_kg_per_m3"],
-                                                                 "Heat Capacity": p["heat_capacity_J_per_kg_K"]}))
-            sif.add(Section("Boundary Condition", 1, Name='"footprint_1"', comment=f"{q_dev} W over {fp_area*1e6:.0f} mm^2",
-                            **{"Target Boundaries": [bids["footprint_1"]], "Heat Flux": flux, "Fp1 Side": True}))
-            sif.add(Section("Boundary Condition", 2, Name='"footprint_2"', **{"Target Boundaries": [bids["footprint_2"]], "Heat Flux": flux, "Fp2 Side": True}))
-            conv_targets = [bids["convective"]] + ([bids["bottom"]] if p["bottom_convective"] else [])
-            sif.add(Section("Boundary Condition", 3, Name='"convective"', **{"Target Boundaries": conv_targets, "Heat Transfer Coefficient": hc,
-                                                                            "External Temperature": t_amb, "Conv Side": True}))
-            if not p["bottom_convective"]:
-                sif.add(Section("Boundary Condition", 4, Name='"bottom_adiabatic"', comment="uncovered bottom: natural BC = adiabatic",
-                                **{"Target Boundaries": [bids["bottom"]]}))
+            for section in heat_conduction_sections(problem, case.names["bodies"], bids, masks=_MASKS):
+                sif.add(section)
             case.write_sif(sif)
             case.run()
             sc = case.scalars("scalars.dat")
@@ -159,8 +151,12 @@ class HeatSinkModel(Model):
                 "R_th_hotspot_K_per_W": (t_max - t_amb) / q_total,
                 "R_th_footprint_mean_K_per_W": (0.5 * (fp1_int / fp1_area + fp2_int / fp2_area) - t_amb) / q_total,
             }
-            case.finalize({"fem": values, "mesh": case.mesh_info}, inputs={**self.params, "heat_flux_W_per_m2": flux},
+            case.finalize({"fem": values, "mesh": case.mesh_info},
+                          inputs={**self.params, "heat_flux_W_per_m2": flux, "problem": problem.describe()},
                           description=self.description)
+            if progress:
+                progress(f"level {lvl}: T_max = {t_max:.3f} K, convective heat out = {q_conv:.6f} W "
+                         f"(input {q_total:g} W), solver {case.solver_time.get('real_s', float('nan')):.2f} s")
             if self.plots:
                 bottom_mask = mesh.boundary_mask(bids["bottom"], case.boundary_offset) | mesh.boundary_mask(bids["footprint_1"], case.boundary_offset) | \
                     mesh.boundary_mask(bids["footprint_2"], case.boundary_offset)
@@ -204,4 +200,5 @@ class HeatSinkModel(Model):
         ]
         timing["total_s"] = round(time.perf_counter() - t0, 3)
         return self.write_summary("executed", results, checks, limitations, timing,
-                                  extra={"convergence_T_max": conv, "levels": rows}, evidence=evidence)
+                                  extra={"convergence_T_max": conv, "levels": rows, "problem": problem.describe()},
+                                  evidence=evidence)

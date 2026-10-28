@@ -287,3 +287,59 @@ def result_output(index: int, output_name: str, binary: bool = True, exec_solver
         "Save Geometry Ids": save_geometry_ids,
     })
     return s.update(extra)
+
+
+# --------------------------------------------------------------------------------------
+# Elmer adapter for the solver-independent materials and physics descriptions
+# --------------------------------------------------------------------------------------
+
+_MATERIAL_KEYWORDS = {
+    "thermal": (("Heat Conductivity", "thermal_conductivity_W_per_m_K"), ("Density", "density_kg_per_m3"),
+                ("Heat Capacity", "heat_capacity_J_per_kg_K")),
+    "electromagnetic": (("Relative Permeability", "relative_permeability"),
+                        ("Electric Conductivity", "electrical_conductivity_S_per_m")),
+}
+
+
+def material_section(index: int, material, physics: str = "thermal") -> Section:
+    """``Material n`` section from an :class:`aipe_fieldsim.materials.Material` (properties that are set only)."""
+    s = Section("Material", index, Name=quoted(material.name))
+    for keyword, attr in _MATERIAL_KEYWORDS[physics]:
+        value = getattr(material, attr)
+        if value is not None:
+            s.set(keyword, float(value))
+    return s
+
+
+def heat_conduction_sections(problem, body_ids: dict, boundary_ids: dict, equation: int = 1,
+                             masks: Optional[dict] = None) -> list[Section]:
+    """Body, Material and Boundary Condition sections for a :class:`aipe_fieldsim.physics.SteadyHeatConduction`.
+
+    ``body_ids`` / ``boundary_ids`` map physical-group names to Elmer ids (``ElmerCase.names``). ``masks`` maps a
+    boundary-condition name to a logical keyword set ``True`` in that section, for use as a SaveScalars mask.
+    Boundary conditions are numbered in the order of ``problem.boundary_conditions``.
+    """
+    from .physics import Adiabatic, Convection, HeatFlux
+
+    masks = masks or {}
+    sections: list[Section] = []
+    material_ids: dict = {}
+    for n, (body, material) in enumerate(problem.bodies.items(), start=1):
+        material_ids.setdefault(material, len(material_ids) + 1)
+        sections.append(Section("Body", n, Name=quoted(body), **{"Target Bodies": [int(body_ids[body])],
+                                                                 "Equation": equation, "Material": material_ids[material]}))
+    sections.extend(material_section(i, m) for m, i in material_ids.items())
+    for n, bc in enumerate(problem.boundary_conditions, start=1):
+        s = Section("Boundary Condition", n, Name=quoted(bc.name), comment=bc.note or None,
+                    **{"Target Boundaries": [int(boundary_ids[b]) for b in bc.boundaries]})
+        if isinstance(bc, HeatFlux):
+            s.set("Heat Flux", float(bc.flux_W_per_m2))
+        elif isinstance(bc, Convection):
+            s.set("Heat Transfer Coefficient", float(bc.h_W_per_m2_K))
+            s.set("External Temperature", float(bc.T_ambient_K))
+        elif not isinstance(bc, Adiabatic):
+            raise TypeError(f"unsupported thermal boundary condition: {bc!r}")
+        if bc.name in masks:
+            s.set(masks[bc.name], True)
+        sections.append(s)
+    return sections

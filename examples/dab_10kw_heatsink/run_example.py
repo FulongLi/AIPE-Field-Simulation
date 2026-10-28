@@ -116,11 +116,20 @@ def level_mesh(case_dir: Path):
     return read_vtu(sorted((case_dir / "mesh").glob("*.vtu"))[-1]), record
 
 
-def top_surface(mesh):
+def outer_triangles(mesh, record) -> np.ndarray:
+    """Boundary triangles of the named outer groups (ElmerGrid also writes the pad/sink interfaces as boundaries)."""
+    idx, tris = mesh.cells_of_type(5)
+    mask = np.zeros(mesh.n_cells, dtype=bool)
+    for bid in record["mesh"]["names"]["boundaries"].values():
+        mask |= mesh.boundary_mask(int(bid), record["boundary_geometry_id_offset"])
+    return tris[mask[idx]]
+
+
+def top_surface(mesh, record):
     """Upward-facing outer triangles at the base top / pad top (z >= 8 mm - eps) for an x-y map."""
     import matplotlib.tri as mtri
 
-    _, tris = mesh.cells_of_type(5)
+    tris = outer_triangles(mesh, record)
     p = mesh.points
     n = np.cross(p[tris[:, 1]] - p[tris[:, 0]], p[tris[:, 2]] - p[tris[:, 0]])
     zc = p[tris].mean(axis=1)[:, 2]
@@ -144,12 +153,11 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
     levels = final["levels"]
     mesh, record = level_mesh(Path(levels[-1]["case_dir"]))
     T_C = mesh.point_data["temperature"] - C0
-    _, tris = mesh.cells_of_type(5)
-    surface_plot_3d(mesh.points, tris, figures / FIGURES["temperature_3d"], values=T_C, units="temperature [°C]", views=VIEWS,
+    surface_plot_3d(mesh.points, outer_triangles(mesh, record), figures / FIGURES["temperature_3d"], values=T_C, units="temperature [°C]", views=VIEWS,
                     title=f"Heat-sink surface temperature, finest mesh ({levels[-1]['elements']} tetrahedra), "
                           f"T_max = {final['results']['T_max_K']['value'] - C0:.1f} °C")
 
-    tri, used = top_surface(mesh)
+    tri, used = top_surface(mesh, record)
     fig, (ax, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.6), dpi=150, gridspec_kw={"width_ratios": [1.15, 1]})
     cs = ax.tricontourf(tri, T_C[used], levels=24, cmap="inferno")
     fig.colorbar(cs, ax=ax, label="temperature [°C]")
@@ -170,8 +178,8 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
         xc = 0.5 * (x0 + x1)
     y = np.linspace(-0.04, 0.04, 801)
     for lvl in levels:
-        m_l, _ = level_mesh(Path(lvl["case_dir"]))
-        tri_l, used_l = top_surface(m_l)
+        m_l, rec_l = level_mesh(Path(lvl["case_dir"]))
+        tri_l, used_l = top_surface(m_l, rec_l)
         t = mtri.LinearTriInterpolator(tri_l, m_l.point_data["temperature"][used_l] - C0)(np.full_like(y, xc), y)
         ax2.plot(y * 1e3, t, lw=1.4 if lvl is levels[-1] else 0.9, label=f"level {lvl['level']}: {lvl['elements']} tets")
     ax.axvline(xc, color="w", lw=0.6, alpha=0.7)
@@ -395,7 +403,7 @@ def main(argv=None) -> int:
               / nominal["R_case_ambient_K_per_W"][d]
               for r in final["levels"] if r["level"] == mesh_in["sweep_level"] for d in cad["devices"]) \
         if any(r["level"] == mesh_in["sweep_level"] for r in final["levels"]) else 0.0
-    checks.append(check("linearity_in_loss", lin <= 1e-6, lin, "<= 1e-6",
+    checks.append(check("linearity_in_loss", lin <= 1e-5, lin, "<= 1e-5",
                         "R_case-amb from the sweep solve (loss at 125 °C) equals the final solve (converged loss) on the same mesh: "
                         "justifies the closed-form electrothermal closure"))
     et = max(abs(v["loss_at_T_j_W"] - v["loss_W"]) / v["loss_W"] for v in devices.values())

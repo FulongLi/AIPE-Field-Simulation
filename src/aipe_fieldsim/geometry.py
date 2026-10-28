@@ -75,3 +75,78 @@ def finned_heatsink_areas(p: dict) -> dict:
         "convective_m2": nf * fin_each + base_top + base_edges, "footprint_m2": footprint,
         "bottom_uncovered_m2": Lx * Ly - 2 * footprint, "volume_m3": Lx * Ly * tb + nf * tf * Ly * hf,
     }
+
+
+# --------------------------------------------------------------------------------------
+# CAD hand-off: STEP models from AIPE-CAD-Agent
+# --------------------------------------------------------------------------------------
+
+def import_step(gmsh, path, unit: str = "M") -> dict[str, int]:
+    """Import a STEP file (coordinates converted to ``unit``); returns ``{product name: volume tag}``.
+
+    AIPE-CAD-Agent names every solid (``Shapes/<model>/<name>/<name>``); the last path component is used.
+    """
+    gmsh.option.setString("Geometry.OCCTargetUnit", unit)
+    gmsh.model.occ.importShapes(str(path))
+    gmsh.model.occ.synchronize()
+    names: dict[str, int] = {}
+    for _, tag in gmsh.model.getEntities(3):
+        name = gmsh.model.getEntityName(3, tag).split("/")[-1] or f"volume_{tag}"
+        if name in names:
+            raise ValueError(f"duplicate STEP product name {name!r}")
+        names[name] = tag
+    return names
+
+
+def cad_device_heatsink(gmsh, step_path, heatsink: str = "body", devices=("Q1", "Q2")) -> dict:
+    """Conduction model of an AIPE-CAD-Agent heat sink: the sink plus each device's isolation pad.
+
+    Keeps ``<heatsink>`` and ``<dev>.pad``, imprints each ``<dev>.tab`` footprint on its pad (the device case /
+    pad contact face, where the loss enters), then deletes every other solid (tab, mould body, leads, screw,
+    bushing). Fragmenting makes the pad/sink interfaces conformal (perfect thermal contact).
+
+    Boundary groups: ``<dev>_case`` (tab footprint on the pad top), ``convective`` (sink faces with z <= 0:
+    fins and base underside, the fins hang down from the base), ``adiabatic`` (all other outer faces).
+    Body groups: ``heatsink`` and ``pad_<dev>``. Returns names, tags and the OCC volumes and face areas.
+    """
+    occ = gmsh.model.occ
+    solids = import_step(gmsh, step_path)
+    keep = [heatsink] + [f"{d}.pad" for d in devices]
+    tabs = [f"{d}.tab" for d in devices]
+    missing = [n for n in keep + tabs if n not in solids]
+    if missing:
+        raise ValueError(f"STEP file lacks solids {missing}; found {sorted(solids)}")
+    volumes = {n: occ.getMass(3, solids[n]) for n in keep}
+    occ.remove([(3, t) for n, t in solids.items() if n not in keep + tabs], recursive=True)
+    _, mapping = occ.fragment([(3, solids[n]) for n in keep], [(3, solids[n]) for n in tabs])
+    occ.synchronize()
+    new = dict(zip(keep + tabs, ([t for d, t in m if d == 3] for m in mapping)))
+    case_faces = {}
+    for dev, tab in zip(devices, tabs):
+        pad_faces = {t for _, t in gmsh.model.getBoundary([(3, v) for v in new[f"{dev}.pad"]], oriented=False)}
+        tab_faces = {t for _, t in gmsh.model.getBoundary([(3, v) for v in new[tab]], oriented=False)}
+        case_faces[dev] = sorted(pad_faces & tab_faces)
+        if not case_faces[dev]:
+            raise ValueError(f"{tab} does not touch {dev}.pad")
+    occ.remove([(3, v) for tab in tabs for v in new[tab]], recursive=True)
+    occ.synchronize()
+    bodies = {"heatsink": new[heatsink]}
+    bodies.update({f"pad_{d}": new[f"{d}.pad"] for d in devices})
+    body_tags = {}
+    for n, (name, vols) in enumerate(bodies.items(), start=1):
+        gmsh.model.addPhysicalGroup(3, vols, n, name)
+        body_tags[name] = n
+    case_set = {t for faces in case_faces.values() for t in faces}
+    sink_faces = {t for _, t in gmsh.model.getBoundary([(3, v) for v in new[heatsink]], oriented=False)}
+    outer = {t for _, t in gmsh.model.getBoundary([(3, v) for vols in bodies.values() for v in vols],
+                                                    oriented=False, combined=True)}
+    groups = {f"{d}_case": case_faces[d] for d in devices}
+    groups["convective"] = sorted(t for t in outer & sink_faces if center(gmsh, 2, t)[2] <= 1e-9)
+    groups["adiabatic"] = sorted(outer - case_set - set(groups["convective"]))
+    boundary_tags = {}
+    for n, (name, faces) in enumerate(groups.items(), start=1):
+        gmsh.model.addPhysicalGroup(2, faces, n, name)
+        boundary_tags[name] = n
+    areas = {name: sum(occ.getMass(2, t) for t in faces) for name, faces in groups.items()}
+    return {"bodies": body_tags, "boundaries": boundary_tags, "step_volumes_m3": volumes, "areas_m2": areas,
+            "entities": {"bodies": {k: list(v) for k, v in bodies.items()}, "boundaries": groups}}

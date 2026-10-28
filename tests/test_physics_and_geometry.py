@@ -1,4 +1,6 @@
 """Solver-independent layers: materials, physics description, its Elmer rendering and the heat-sink geometry."""
+from pathlib import Path
+
 import pytest
 
 from aipe_fieldsim.geometry import finned_heatsink_areas
@@ -92,3 +94,24 @@ def test_heatsink_geometry_groups_areas_and_mesh(tmp_path):
     assert stats["elements_by_dim"]["3"] > 1000
     text = path.read_text()
     assert text.startswith("$MeshFormat\n2.2 0 8") and '2 1 "footprint_1"' in text and '3 1 "heatsink"' in text
+
+
+DAB_CAD = Path(__file__).resolve().parents[1] / "examples" / "dab_10kw_heatsink" / "cad"
+
+
+@pytest.mark.mesh
+def test_cad_step_import_groups_match_cad_metadata():
+    import json
+
+    from aipe_fieldsim.geometry import cad_device_heatsink
+    from aipe_fieldsim.meshing import gmsh_session
+
+    meta = {b["name"]: b for b in json.loads((DAB_CAD / "dab_heatsink.metadata.json").read_text())["bodies"]}
+    with gmsh_session("cad-test") as gmsh:
+        g = cad_device_heatsink(gmsh, DAB_CAD / "dab_heatsink.step")
+    assert g["bodies"] == {"heatsink": 1, "pad_Q1": 2, "pad_Q2": 3}
+    assert g["boundaries"] == {"Q1_case": 1, "Q2_case": 2, "convective": 3, "adiabatic": 4}
+    for name, volume in g["step_volumes_m3"].items():  # metres after import, as in the metadata
+        assert volume == pytest.approx(meta[name]["volume_m3"], rel=1e-9)
+    for dev in ("Q1", "Q2"):  # prismatic 1.5 mm tab: footprint area = tab volume / thickness
+        assert g["areas_m2"][f"{dev}_case"] == pytest.approx(meta[f"{dev}.tab"]["volume_m3"] / 1.5e-3, rel=1e-9)

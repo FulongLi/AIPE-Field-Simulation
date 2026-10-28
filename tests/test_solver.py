@@ -88,3 +88,18 @@ def test_transformer_model_static_quick(solver_tools, tmp_path):
     est = summary["results"]["L_leakage_primary_1d_estimate_H"]["value"]
     assert abs(fem - est) / est < 0.5  # same order of magnitude as the 1-D MMF estimate
     assert summary["results"]["L_magnetising_primary_H"]["value"] > fem
+
+
+def test_cad_heatsink_model_coarse(solver_tools, tmp_path):
+    from pathlib import Path
+
+    from aipe_fieldsim.models import CadHeatSinkModel
+
+    cad = Path(__file__).resolve().parents[1] / "examples" / "dab_10kw_heatsink" / "cad"
+    params = {"step_file": str(cad / "dab_heatsink.step"), "metadata_file": str(cad / "dab_heatsink.metadata.json"),
+              "device_loss_W": {"Q1": 15.0, "Q2": 15.0}, "mesh_levels_m": [[6e-3, 2e-3, 0.6e-3]]}
+    summary = CadHeatSinkModel(tmp_path, params=params, tools=solver_tools, plots=False).run(levels=(0,))
+    checks = {c["name"]: c for c in summary["checks"]}
+    assert all(c["passed"] for c in checks.values()), checks
+    assert summary["results"]["Q_convective_W"]["value"] == pytest.approx(30.0, rel=1e-6)
+    assert summary["results"]["T_case_Q1_mean_K"]["value"] > 313.15

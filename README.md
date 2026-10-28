@@ -22,6 +22,7 @@ against measurements.
   3-D fin) with mesh-convergence studies
 - Two DAB-relevant parametric models: a 2-D E-core transformer window and a 3-D finned heat sink with two
   TO-247 sources
+- STEP import from AIPE-CAD-Agent: bodies are mapped by CAD product name and checked against the CAD metadata
 - Every quantity in SI with units, provenance fields and `review_status: unreviewed`
 
 ## Installation
@@ -61,8 +62,13 @@ python examples/heatsink_to247/run_example.py                  # needs Gmsh and 
 python examples/heatsink_to247/run_example.py --geometry-only  # Gmsh only
 ```
 
-CI executes it on every push. The committed outputs in
-[`examples/heatsink_to247/results`](examples/heatsink_to247/results/report.md) name the run that produced them.
+[`examples/dab_10kw_heatsink`](examples/dab_10kw_heatsink/README.md) applies the same chain to a real AIPE design.
+It takes the 10 kW DAB primary half-bridge heat sink that AIPE-CAD-Agent produced, imports its STEP model into
+Gmsh, and uses AIPE-Thermal-Design's device-loss model. The result is junction temperatures from a self-consistent
+electrothermal solution (78 °C at the nominal forced-air film coefficient), plus a sweep over the cooling.
+
+CI executes both examples on every push. The committed outputs in each example's `results/` folder name the run
+that produced them.
 
 ## Project Information
 
@@ -83,6 +89,6 @@ CI executes it on every push. The committed outputs in
 - [Architecture](docs/architecture.md): simulation stages, AIPE integration points, tool discovery, case directory
 - [Benchmarks and verification](docs/validation.md) · [complete tables](results/benchmarks.md)
 - [DAB-relevant models](docs/models.md): transformer window and heat sink
-- [Heat-sink example](examples/heatsink_to247/README.md)
+- Examples: [heat sink with two TO-247 devices](examples/heatsink_to247/README.md) · [10 kW DAB heat sink from AIPE-CAD-Agent](examples/dab_10kw_heatsink/README.md)
 - [Limitations](docs/limitations.md) · [OpenFOAM job specification](docs/jobs/openfoam-heatsink-cfd-job.md)
 - [Capability manifest](aipe.yaml), Registry id `aipe.field-simulation`

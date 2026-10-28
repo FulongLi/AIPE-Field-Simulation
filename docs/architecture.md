@@ -39,10 +39,15 @@ groups, `Material` records, physics description) and produces fields readable by
 
 ## Integration with the AIPE ecosystem
 
-- **AIPE-CAD-Agent** (geometry in): a CAD model can replace a parametric builder. Gmsh imports STEP through
-  `gmsh.model.occ.importShapes`; the only contract is that bodies and boundaries receive the physical-group
-  names the physics description uses (for the heat sink: `heatsink`, `footprint_1`, `footprint_2`,
-  `convective`, `bottom`).
+- **AIPE-CAD-Agent** (geometry in): implemented for heat sinks. `geometry.import_step` reads a STEP model and
+  names each solid by its CAD product name. `geometry.cad_device_heatsink` then keeps the sink and the
+  `<device>.pad` solids and imprints each `<device>.tab` footprint as the heat input, giving physical groups
+  `heatsink`, `pad_<device>`, `<device>_case`, `convective` and `adiabatic`. `models.CadHeatSinkModel` solves it
+  and compares the imported volumes with the CAD agent's `*.metadata.json`. See
+  [`examples/dab_10kw_heatsink`](../examples/dab_10kw_heatsink/README.md).
+- **AIPE-Thermal-Design** (losses and film coefficients in): the DAB example uses its device-loss model and a
+  recorded forced-air film coefficient as inputs; the FEM result replaces its analytical sink and spreading
+  resistances for the one CAD design.
 - **AIPE-Workflow** (job in, record out): a run is a parameter dictionary in SI units with unit-suffixed keys
   (see [`examples/heatsink_to247/parameters.json`](../examples/heatsink_to247/parameters.json)) and returns
   `summary.json` (schema `aipe.field-simulation/model-summary/0.1` or `.../benchmark-summary/0.1`) with
@@ -82,7 +87,7 @@ RFC 3339 timestamps, versioned tool attribution and hashed artifacts).
 aipe.yaml                      AIPE Registry capability manifest (id aipe.field-simulation)
 pyproject.toml                 package metadata, CLI entry point aipe-fieldsim, pytest markers "solver" and "mesh"
 src/aipe_fieldsim/
-  geometry.py     parametric Gmsh OCC builders with named physical groups (finned heat sink)
+  geometry.py     parametric Gmsh OCC builders with named physical groups (finned heat sink); STEP import (AIPE-CAD-Agent)
   meshing.py      Gmsh helpers: sizes, generation, MSH 2.2 output, surface triangles for plots
   grd.py          ElmerGrid structured-grid writer      elmermesh.py  Elmer mesh directory inspection
   materials.py    SI material library                    physics.py    solver-independent physics/BC description
@@ -94,9 +99,9 @@ src/aipe_fieldsim/
   analytic.py     closed-form references                  evidence.py   AIPE-Core style evidence fragments
   plots.py        matplotlib tri-plots, profiles, 3-D surfaces   report.py  summary.json -> results/benchmarks.md
   benchmarks/     slab.py, coax.py, skin.py, fin.py (+ base.py driver)
-  models/         transformer_window.py, heatsink.py (+ base.py)
+  models/         transformer_window.py, heatsink.py, cad_heatsink.py (+ base.py)
   cli.py          aipe-fieldsim doctor | benchmark | transformer | heatsink | report
-examples/         complete runnable examples (heatsink_to247: inputs -> Gmsh -> Elmer -> checks -> figures)
+examples/         complete runnable examples: heatsink_to247 (parametric), dab_10kw_heatsink (AIPE-CAD-Agent STEP)
 tests/            unit tests, Gmsh-only mesh tests, solver tests
 docs/             architecture, development, validation, models, limitations; docs/jobs/ blocked CFD job specification
 results/          previously recorded executed runs (tables, summaries, plots)

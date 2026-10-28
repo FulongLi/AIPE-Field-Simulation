@@ -57,9 +57,9 @@ pytest                                                   # unit tests + solver t
 ## Tests
 
 ```bash
-pytest                 # 42 tests: 34 unit tests (SIF templating, VTU reader, SaveData parsers, analytic formulas,
+pytest                 # 44 tests: 34 unit tests (SIF templating, VTU reader, SaveData parsers, analytic formulas,
                        #           tool discovery, mesh inspection, hashing, evidence, materials/physics, aipe.yaml),
-                       #           1 Gmsh-only mesh test (heat-sink geometry), 7 solver tests
+                       #           2 Gmsh-only mesh tests (heat-sink geometry, AIPE-CAD-Agent STEP import), 8 solver tests
 pytest -m "not solver" # unit and mesh tests only (no Elmer needed)
 AIPE_REQUIRE_SOLVER=1 pytest -m solver   # fail instead of skip when Elmer or Gmsh is missing
 ```
@@ -77,6 +77,6 @@ exists (`python ../AIPE-Registry/scripts/validate.py aipe.yaml ../AIPE-Core/aipe
 | Job | Runner | What it executes |
 | --- | --- | --- |
 | unit tests (Python 3.10, 3.11, 3.12) | `ubuntu-latest` | `pytest -m "not solver"` with `AIPE_REQUIRE_GMSH=1`: unit tests plus the Gmsh heat-sink geometry test |
-| executed Gmsh + Elmer solver tests and heat-sink example | `ubuntu-24.04` (Elmer from the ElmerCSC PPA) | `aipe-fieldsim doctor --qualify` (known-answer Gmsh and Elmer cases), `pytest -m solver` with `AIPE_REQUIRE_SOLVER=1` and an assertion that no solver test was skipped, then [`examples/heatsink_to247`](../examples/heatsink_to247/README.md) end to end; its figures, report and summaries are uploaded as the `heatsink-example-results` artifact |
+| executed Gmsh + Elmer solver tests and heat-sink example | `ubuntu-24.04` (Elmer from the ElmerCSC PPA) | `aipe-fieldsim doctor --qualify` (known-answer Gmsh and Elmer cases), `pytest -m solver` with `AIPE_REQUIRE_SOLVER=1` and an assertion that no solver test was skipped, then both examples end to end ([`heatsink_to247`](../examples/heatsink_to247/README.md), [`dab_10kw_heatsink`](../examples/dab_10kw_heatsink/README.md)); their figures, reports and summaries are uploaded as the `heatsink-example-results` and `dab-heatsink-example-results` artifacts |
 
 The solver job is pinned to 24.04 because the PPA publishes no build for 26.04 (the current `ubuntu-latest`).

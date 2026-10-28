@@ -143,12 +143,12 @@ def top_layers(mesh, record) -> list:
         used = np.unique(sel)
         remap = -np.ones(mesh.n_points, dtype=int)
         remap[used] = np.arange(used.size)
-        layers.append((mtri.Triangulation(p[used, 0], p[used, 1], remap[sel]), used))
+        layers.append((mtri.Triangulation(p[used, 0] * 1e3, p[used, 1] * 1e3, remap[sel]), used))  # mm
     return layers
 
 
 def top_profile(mesh, record, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-    """Temperature [degC] of the uppermost top face along (x, y)."""
+    """Temperature [degC] of the uppermost top face along (x, y) given in mm."""
     import matplotlib.tri as mtri
 
     out = np.full(x.shape, np.nan)
@@ -180,27 +180,27 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
         cs = ax.tricontourf(tri, T_C[used], levels=contour_levels, cmap="inferno")
     fig.colorbar(cs, ax=ax, label="temperature [°C]")
     ax.set_aspect("equal")
-    ax.set_xlabel("x [m]")
-    ax.set_ylabel("y [m]")
+    ax.set_xlabel("x [mm]")
+    ax.set_ylabel("y [mm]")
     ax.set_title("Base top and pad top (devices removed)")
     names = record["mesh"]["names"]["boundaries"]
     offset = record["boundary_geometry_id_offset"]
     for d in devices:
         m = mesh.boundary_mask(int(names[f"{d}_case"]), offset)
         idx, ctris = mesh.cells_of_type(5)
-        pts = mesh.points[np.unique(ctris[m[idx]])]
+        pts = mesh.points[np.unique(ctris[m[idx]])] * 1e3
         x0, y0 = pts[:, :2].min(axis=0)
         x1, y1 = pts[:, :2].max(axis=0)
         ax.add_patch(plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, ec="w", lw=0.8, ls="--"))
-        ax.text(x0, y1 + 1e-3, f"{d} case", color="k", fontsize=8)
+        ax.text(x0, y1 + 1.0, f"{d} case", color="k", fontsize=8)
         xc = 0.5 * (x0 + x1)
-    y = np.linspace(-0.04, 0.04, 801)
+    y = np.linspace(-40.0, 40.0, 801)
     for lvl in levels:
         m_l, rec_l = level_mesh(Path(lvl["case_dir"]))
         t = top_profile(m_l, rec_l, np.full_like(y, xc), y)
-        ax2.plot(y * 1e3, t, lw=1.4 if lvl is levels[-1] else 0.9, label=f"level {lvl['level']}: {lvl['elements']} tets")
+        ax2.plot(y, t, lw=1.4 if lvl is levels[-1] else 0.9, label=f"level {lvl['level']}: {lvl['elements']} tets")
     ax.axvline(xc, color="w", lw=0.6, alpha=0.7)
-    ax2.set_xlabel(f"y at x = {xc*1e3:.1f} mm (through both device centres) [mm]")
+    ax2.set_xlabel(f"y at x = {xc:.1f} mm (through both device centres) [mm]")
     ax2.set_ylabel("top-surface temperature [°C]")
     ax2.set_title("Profile across both devices")
     ax2.grid(True, alpha=0.3)
@@ -212,20 +212,20 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
     # junction temperature vs film coefficient (closures from the sweep)
     fig, ax = plt.subplots(figsize=(6.8, 4.4), dpi=150)
     hs = [s["h"] for s in sweep]
-    for d in devices:
-        ax.plot(hs, [s["closure"][d]["T_j_C"] for s in sweep], "o-", label=f"{d} junction (electrothermal)")
-    ax.plot(hs, [s["closure"][devices[0]]["T_case_C"] for s in sweep], "s--", color="0.4", label=f"{devices[0]} case")
+    d0 = devices[0]
+    ax.plot(hs, [s["closure"][d0]["T_j_C"] for s in sweep], "o-", label=f"junction (electrothermal), {' and '.join(devices)}")
+    ax.plot(hs, [s["closure"][d0]["T_case_C"] for s in sweep], "s--", color="0.4", label="case (tab footprint mean)")
     ax.axhline(t_lim[0], color="tab:orange", ls=":", label=f"design target {t_lim[0]:g} °C")
     ax.axhline(t_lim[1], color="tab:red", ls=":", label=f"datasheet maximum {t_lim[1]:g} °C")
     h_nom = closures["h"]
     ax.axvline(h_nom, color="k", lw=0.8, alpha=0.5)
-    ax.text(h_nom * 1.03, ax.get_ylim()[1] * 0.97, f"nominal h = {h_nom:g}", fontsize=8, va="top")
+    ax.text(h_nom * 0.97, 0.04, f"nominal h = {h_nom:g} W/m²K", fontsize=8, ha="right", transform=ax.get_xaxis_transform())
     ax.set_xscale("log")
     ax.set_xlabel("film coefficient on the fin side h [W/m²K]")
     ax.set_ylabel("temperature [°C]")
     ax.set_title("Junction temperature vs cooling (one FEM solve per h)")
     ax.grid(True, which="both", alpha=0.3)
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=8, loc="upper right")
     fig.tight_layout()
     fig.savefig(figures / FIGURES["junction_vs_h"])
     plt.close(fig)

@@ -11,6 +11,7 @@ license: MIT
 capabilities: [fem-thermal-conduction, fem-magnetostatics-2d, fem-eddy-current-2d, analytic-benchmark-verification, simulation-case-provenance]
 inputs:
   - {name: model-parameters, description: 'SI parameter dictionaries (geometry, materials, currents, film coefficients) passed to the benchmark and model classes or the CLI.'}
+  - {name: cad-step-model, description: 'Optional AIPE-CAD-Agent STEP model and metadata.json of a heat sink with <device>.pad/<device>.tab solids (models.CadHeatSinkModel).'}
   - {name: engineering-state, description: 'Optional AIPE-Core Engineering State whose operating point supplies currents, frequency and ambient temperature (mapping done by the caller).', schema: 'https://raw.githubusercontent.com/FulongLi/AIPE-Core/v0.1.0/schemas/engineering-state.schema.json'}
 outputs:
   - {name: case-directory, description: 'Mesh source, Elmer mesh database, rendered SIF, solver logs, SaveScalars/SaveLine data, VTU fields, results.json and case.json with tool versions, commands and SHA-256 hashes.'}
@@ -71,6 +72,7 @@ validation:
     - .github/workflows/tests.yml
     - results/benchmarks.md
     - examples/heatsink_to247/README.md
+    - examples/dab_10kw_heatsink/README.md
   limitations:
     - 'Tested means: unit tests of parsers/templating/analytic formulas plus end-to-end solver tests executed on Windows 11 with Gmsh 4.15.2 and Elmer 9.0 (recorded results) and on every push in GitHub Actions on Ubuntu 24.04 with Gmsh 4.15.2 and Elmer 26.2 from the ElmerCSC PPA, where a skipped solver test fails the job; locally the solver tests skip when the tools are absent.'
     - 'Benchmarks are verified against closed-form solutions only; no measured validation of any transformer or heat-sink result.'
@@ -80,6 +82,7 @@ documentation:
   - README.md
   - docs/architecture.md
   - examples/heatsink_to247/README.md
+  - examples/dab_10kw_heatsink/README.md
   - results/benchmarks.md
   - docs/jobs/openfoam-heatsink-cfd-job.md
   - LICENSE

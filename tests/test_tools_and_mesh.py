@@ -9,7 +9,7 @@ from aipe_fieldsim.elmermesh import inspect_elmer_mesh, read_names
 from aipe_fieldsim.evidence import analytical_evidence, quantity, simulation_evidence
 from aipe_fieldsim.grd import BOUNDARY_SIDES, rectangle_grd
 from aipe_fieldsim.hashing import artifact_record, hash_tree, sha256_bytes
-from aipe_fieldsim.tools import ELMER_VERSION_RE, ToolInfo, elmer_env, find_executable, tool_manifest
+from aipe_fieldsim.tools import ELMER_BANNER_RE, ELMER_VERSION_RE, ToolInfo, elmer_env, find_executable, tool_manifest
 
 
 def test_find_executable_env_precedence(tmp_path, monkeypatch):
@@ -33,6 +33,8 @@ def test_find_executable_env_precedence(tmp_path, monkeypatch):
 def test_version_regex_and_attribution():
     m = ELMER_VERSION_RE.search("MAIN: Version: 9.0 (Rev: Release, Compiled: 2026-01-20)")
     assert m.groups() == ("9.0", "Release", "2026-01-20")
+    banner = ELMER_BANNER_RE.search("ELMER SOLVER (v 26.2) STARTED AT: 2026/10/28 14:06:54")
+    assert banner.group(1) == "26.2"
     info = ToolInfo("elmersolver", "Elmer", True)
     assert info.attribution() == {"id": "elmersolver", "version": "unversioned", "name": "Elmer"}
 

@@ -28,6 +28,8 @@ from pathlib import Path
 from typing import Optional
 
 ELMER_VERSION_RE = re.compile(r"Version:\s*([\d.]+)\s*\(Rev:\s*([^,]+),\s*Compiled:\s*([^)]+)\)")
+# Some Linux builds (e.g. the ElmerCSC PPA) answer ``ElmerSolver -v`` with the start banner only.
+ELMER_BANNER_RE = re.compile(r"ELMER SOLVER \(v\s*([\d.]+)\)")
 
 
 @dataclass
@@ -134,8 +136,12 @@ def find_elmer(start: Optional[Path] = None) -> tuple[ToolInfo, ToolInfo]:
         solver.home = env["ELMER_HOME"]
         text = _run_version([str(solver_path), "-v"], env)
         m = ELMER_VERSION_RE.search(text)
+        banner = ELMER_BANNER_RE.search(text)
         if m:
             solver.version, solver.revision, solver.compiled = m.group(1), m.group(2).strip(), m.group(3).strip()
+        elif banner:
+            solver.version = banner.group(1)
+            solver.notes.append("version from start banner; revision and compile date not reported")
         else:
             solver.notes.append("version banner not recognised: " + text[:200])
     if grid_path:

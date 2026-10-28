@@ -50,6 +50,16 @@ Run times (this workstation, serial): slab 1.0 s, coax 1.6 s, skin 1.0 s, fin 9.
 The DAB-relevant models (2-D transformer window, 3-D heat sink) and their executed results are documented in
 [models.md](models.md).
 
+## Re-execution in continuous integration (Ubuntu 24.04, Elmer 26.2, Gmsh 4.15.2)
+
+The tables above are the recorded Windows runs. Independently, every push re-executes on GitHub Actions: the
+Elmer known-answer qualification (T_max = 305 K), the coarsest level of all four benchmarks and small instances
+of both models with the tolerances in `tests/test_solver.py`, and the complete heat-sink example
+([`examples/heatsink_to247`](../examples/heatsink_to247/README.md)) on all three mesh levels. The example
+compares itself with the recorded `results/heatsink_h25` run and fails if the hotspot temperature rise differs by
+more than 1 %. On a different OS, Elmer build and mesh (21983 vs 22010 tetrahedra on the coarsest level) the
+difference was 7.6e-5. The example's committed outputs carry the CI run that produced them.
+
 ## What "verified" means here, and what it does not
 
 - Verification = the FEM reproduces closed-form solutions with recorded relative error and observed convergence

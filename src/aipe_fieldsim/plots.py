@@ -168,7 +168,8 @@ def surface_plot_3d(points: np.ndarray, tris: np.ndarray, path: Path | str, valu
         if label:
             ax.set_title(label, fontsize=10)
     if mappable is not None:
-        cb = fig.colorbar(mappable, ax=fig.axes, shrink=0.7, pad=0.02)
+        fig.subplots_adjust(right=0.88)
+        cb = fig.colorbar(mappable, cax=fig.add_axes((0.91, 0.22, 0.014, 0.56)))
         cb.set_label(units)
     if legend:
         fig.legend(handles=[Patch(color=c, label=k) for k, c in legend.items()], loc="lower center",

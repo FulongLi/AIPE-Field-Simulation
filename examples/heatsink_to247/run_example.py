@@ -243,6 +243,11 @@ def fmt(v, digits=5):
     return f"{v:.{digits}g}" if isinstance(v, float) else str(v)
 
 
+def cell(text) -> str:
+    """Markdown table cell (pipes inside |x| would otherwise split the cell)."""
+    return str(text).replace("|", "\\|")
+
+
 def write_report(path: Path, summary: dict, model_summary: dict, parameters_file: Path) -> None:
     prov, res = summary["provenance"], model_summary["results"]
     where = prov["ci"]["run_url"] if prov["ci"] else "a local machine"
@@ -264,7 +269,8 @@ def write_report(path: Path, summary: dict, model_summary: dict, parameters_file
     lines += ["", "## Verification and engineering checks", "", "| Check | Value | Criterion | Passed | Meaning |",
               "| --- | --- | --- | --- | --- |"]
     for c in summary["checks"]:
-        lines.append(f"| {c['name']} | {fmt(c['value'], 3)} | {c['criterion']} | {'yes' if c['passed'] else '**NO**'} | {c['description']} |")
+        lines.append(f"| {c['name']} | {fmt(c['value'], 3)} | {cell(c['criterion'])} | {'yes' if c['passed'] else '**NO**'} | "
+                     f"{cell(c['description'])} |")
     est = summary["fin_estimate"]
     lines += ["", f"Fin-theory estimate: fin efficiency {est['fin_efficiency']:.4f}, isothermal-base R_th = "
               f"{est['R_th_fin_estimate_K_per_W']:.4f} K/W versus FEM mean-footprint R_th = {est['R_th_fem_footprint_mean_K_per_W']:.4f} K/W "

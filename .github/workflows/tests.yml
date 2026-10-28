@@ -39,8 +39,9 @@ jobs:
 
   solver:
     name: executed Gmsh + Elmer solver tests and heat-sink example
-    # Elmer FEM is not in the Ubuntu archive; the ElmerCSC PPA publishes Elmer 9.0 for the LTS releases
-    # up to 24.04 (noble) but not for 26.04, which ubuntu-latest now resolves to. Pin the image.
+    # Elmer FEM is not in the Ubuntu archive; the ElmerCSC PPA (package elmerfem-csc 9.0-0ppa..., binaries report
+    # v26.2) publishes builds for the LTS releases up to 24.04 (noble) but not for 26.04, which ubuntu-latest
+    # now resolves to. Pin the image.
     runs-on: ubuntu-24.04
     env:
       AIPE_REQUIRE_SOLVER: '1'  # a missing ElmerSolver/ElmerGrid/gmsh fails the job instead of skipping

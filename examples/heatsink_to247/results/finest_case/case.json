@@ -1,0 +1,348 @@
+{
+  "schema": "aipe.field-simulation/case-record/0.1",
+  "name": "heatsink_3d-h25-level2",
+  "description": "Aluminium base plate with straight fins; two 20 W TO-247 footprints as heat-flux boundaries on the bottom; convective film coefficient on the exposed faces; Elmer HeatSolve on Gmsh tetrahedra with a mesh-refinement study and an energy-conservation check.",
+  "status": "completed",
+  "created_at": "2026-10-28T14:21:37+00:00",
+  "finished_at": "2026-10-28T14:21:49+00:00",
+  "case_dir": "runs/example-heatsink/model/h25_level2",
+  "tools": {
+    "elmersolver": {
+      "id": "elmersolver",
+      "name": "Elmer FEM ElmerSolver",
+      "found": true,
+      "path": "/usr/bin/ElmerSolver",
+      "version": "26.2",
+      "revision": null,
+      "compiled": null,
+      "source": "PATH",
+      "licence": "GPL-2.0-or-later (ElmerSolver), LGPL-2.1 (elmersolver library parts)",
+      "home": "/usr",
+      "notes": [
+        "version from start banner; revision and compile date not reported"
+      ]
+    },
+    "elmergrid": {
+      "id": "elmergrid",
+      "name": "Elmer FEM ElmerGrid",
+      "found": true,
+      "path": "/usr/bin/ElmerGrid",
+      "version": "26.2",
+      "revision": "NA",
+      "compiled": "NA",
+      "source": "PATH",
+      "licence": "GPL-2.0-or-later",
+      "home": "/usr",
+      "notes": []
+    },
+    "gmsh": {
+      "id": "gmsh",
+      "name": "Gmsh (python SDK)",
+      "found": true,
+      "path": "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/gmsh.py",
+      "version": "4.15.2",
+      "revision": null,
+      "compiled": null,
+      "source": "python-module",
+      "licence": "GPL-2.0-or-later",
+      "home": null,
+      "notes": []
+    },
+    "python": {
+      "executable": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+      "version": "3.11.17",
+      "packages": {
+        "numpy": "2.4.6",
+        "scipy": null,
+        "matplotlib": "3.11.2",
+        "gmsh": "4.15.2"
+      },
+      "platform": {
+        "system": "Linux",
+        "release": "6.17.0-1022-azure",
+        "machine": "x86_64"
+      }
+    }
+  },
+  "environment": {
+    "ELMER_HOME": "/usr"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/ElmerGrid",
+        "14",
+        "2",
+        "mesh.msh",
+        "-out",
+        "mesh"
+      ],
+      "cwd": "runs/example-heatsink/model/h25_level2",
+      "returncode": 0,
+      "duration_s": 0.215,
+      "log": "elmergrid.log",
+      "started_at": "2026-10-28T14:21:47+00:00"
+    },
+    {
+      "argv": [
+        "/usr/bin/ElmerSolver",
+        "case.sif"
+      ],
+      "cwd": "runs/example-heatsink/model/h25_level2",
+      "returncode": 0,
+      "duration_s": 1.769,
+      "log": "elmersolver.log",
+      "started_at": "2026-10-28T14:21:49+00:00"
+    }
+  ],
+  "mesh": {
+    "nodes": 31168,
+    "bulk_elements": 112786,
+    "boundary_elements": 47912,
+    "element_types": {
+      "303": 47912,
+      "504": 112786
+    },
+    "dimension": 3,
+    "bodies": {
+      "1": 112786
+    },
+    "boundaries": {
+      "1": {
+        "elements": 430,
+        "nodes": 243,
+        "bbox_min": [
+          0.022,
+          0.0195,
+          0.0
+        ],
+        "bbox_max": [
+          0.038,
+          0.0405,
+          0.0
+        ]
+      },
+      "2": {
+        "elements": 434,
+        "nodes": 245,
+        "bbox_min": [
+          0.062,
+          0.0195,
+          0.0
+        ],
+        "bbox_max": [
+          0.078,
+          0.0405,
+          0.0
+        ]
+      },
+      "3": {
+        "elements": 40424,
+        "nodes": 20328,
+        "bbox_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bbox_max": [
+          0.1,
+          0.06,
+          0.031
+        ]
+      },
+      "4": {
+        "elements": 6624,
+        "nodes": 3480,
+        "bbox_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bbox_max": [
+          0.1,
+          0.06,
+          0.0
+        ]
+      }
+    },
+    "names": {
+      "bodies": {
+        "heatsink": 1
+      },
+      "boundaries": {
+        "footprint_1": 1,
+        "footprint_2": 2,
+        "convective": 3,
+        "bottom": 4
+      }
+    },
+    "bbox_min": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bbox_max": [
+      0.1,
+      0.06,
+      0.031
+    ],
+    "source": "mesh.msh"
+  },
+  "sif": "case.sif",
+  "inputs": {
+    "base_length_m": 0.1,
+    "base_width_m": 0.06,
+    "base_thickness_m": 0.006,
+    "fin_count": 8,
+    "fin_thickness_m": 0.002,
+    "fin_height_m": 0.025,
+    "footprint_length_m": 0.016,
+    "footprint_width_m": 0.021,
+    "footprint_offset_m": 0.02,
+    "device_power_W": 20.0,
+    "h_W_per_m2_K": 25.0,
+    "T_ambient_K": 300.0,
+    "bottom_convective": false,
+    "k_W_per_m_K": 200.0,
+    "density_kg_per_m3": 2700.0,
+    "heat_capacity_J_per_kg_K": 900.0,
+    "h_levels_m": [
+      0.003,
+      0.002,
+      0.0014
+    ],
+    "heat_flux_W_per_m2": 59523.80952380952,
+    "problem": {
+      "physics": "steady heat conduction",
+      "bodies": {
+        "heatsink": {
+          "name": "aluminium",
+          "thermal_conductivity_W_per_m_K": 200.0,
+          "density_kg_per_m3": 2700.0,
+          "heat_capacity_J_per_kg_K": 900.0,
+          "electrical_conductivity_S_per_m": 35000000.0,
+          "relative_permeability": 1.0,
+          "source": "generic wrought heat-sink aluminium; k = 200 W/m/K lies between 6061-T6 (~167) and 6063-T5 (~209)"
+        }
+      },
+      "boundary_conditions": [
+        {
+          "type": "HeatFlux",
+          "name": "footprint_1",
+          "boundaries": [
+            "footprint_1"
+          ],
+          "flux_W_per_m2": 59523.80952380952,
+          "note": "20.0 W over 336 mm^2"
+        },
+        {
+          "type": "HeatFlux",
+          "name": "footprint_2",
+          "boundaries": [
+            "footprint_2"
+          ],
+          "flux_W_per_m2": 59523.80952380952,
+          "note": ""
+        },
+        {
+          "type": "Convection",
+          "name": "convective",
+          "boundaries": [
+            "convective"
+          ],
+          "h_W_per_m2_K": 25.0,
+          "T_ambient_K": 300.0,
+          "note": ""
+        },
+        {
+          "type": "Adiabatic",
+          "name": "bottom_adiabatic",
+          "boundaries": [
+            "bottom"
+          ],
+          "note": "uncovered bottom: natural BC = adiabatic"
+        }
+      ]
+    }
+  },
+  "solver_time": {
+    "cpu_s": 1.4,
+    "real_s": 1.71
+  },
+  "log_scalars": {},
+  "boundary_geometry_id_offset": 100,
+  "warnings": [],
+  "results_file": "results.json",
+  "artifacts": [
+    {
+      "path": "case.sif",
+      "sha256": "6eb3df03ae4b4a3951a6ad9367dc39380ca0f48f3bd56b7fd62af280b351e0ca",
+      "bytes": 2692
+    },
+    {
+      "path": "elmergrid.log",
+      "sha256": "5ba0889e91c3c409b0b5789f9483f2aaae7732a1d0783457548617fc97630032",
+      "bytes": 1766
+    },
+    {
+      "path": "elmersolver.log",
+      "sha256": "526ffc9781500f67b7981a9259c911b097a73f6433ee225bcb7a00e30e799312",
+      "bytes": 10335
+    },
+    {
+      "path": "mesh/entities.sif",
+      "sha256": "8d38dc8f923a5c930d5be3a1f2cb2a728347991c614e4797af2e13e9d25f41e6",
+      "bytes": 296
+    },
+    {
+      "path": "mesh/heatsink_t0001.vtu",
+      "sha256": "a627ee1d28f80a5b919d332a3303e4039a61f9ec5ec0c75145986951bb81644f",
+      "bytes": 5306395
+    },
+    {
+      "path": "mesh/mesh.boundary",
+      "sha256": "8b1690298dbc44a6e2ac237dac78a42ec5e1df0ede4f4f1554c783613ce1791a",
+      "bytes": 1749490
+    },
+    {
+      "path": "mesh/mesh.elements",
+      "sha256": "d43ada2be145e3cf616d2ffaa7c9a3976fe57f88e0ad18c9858987c016cfed0c",
+      "bytes": 3945224
+    },
+    {
+      "path": "mesh/mesh.header",
+      "sha256": "ce24617d4efb6e962e620842fbbaaaa6a4d96dc8477e74d3d5276d269945dc33",
+      "bytes": 56
+    },
+    {
+      "path": "mesh/mesh.names",
+      "sha256": "d5e3d5d3a58ef5b593485086d56101ecec8789bb56eb6e098f41b0cdb06da2ee",
+      "bytes": 147
+    },
+    {
+      "path": "mesh/mesh.nodes",
+      "sha256": "7e08bc279acdab6ea70c99b76c9ef4938709432d6d261e0639d574fd55a64ee7",
+      "bytes": 1474689
+    },
+    {
+      "path": "mesh.msh",
+      "sha256": "f70eabde5f81f6315afafb8768055e855f48ab70730675b8103ce104bd8af54b",
+      "bytes": 7441875
+    },
+    {
+      "path": "results.json",
+      "sha256": "1108ad3b0ea1edd68b4a6e371a05d8cfb36c9150b33730c52a19aa4dc84df551",
+      "bytes": 2168
+    },
+    {
+      "path": "scalars.dat",
+      "sha256": "85a6c2de69e5c776a942983002d9d6736dcf582527e9339770f2dc85bc0aac0e",
+      "bytes": 221
+    },
+    {
+      "path": "scalars.dat.names",
+      "sha256": "02f846d19edf070bcc38fe303bb774f95166261be4c8b2e0624649f582e7f3b0",
+      "bytes": 572
+    }
+  ]
+}

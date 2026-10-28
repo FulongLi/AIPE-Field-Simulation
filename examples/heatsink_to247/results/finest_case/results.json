@@ -1,0 +1,115 @@
+{
+  "fem": {
+    "T_max_K": 353.4263329197,
+    "hotspot_xyz_m": [
+      0.068027706083,
+      0.0300844522516,
+      0.0
+    ],
+    "T_footprint_1_mean_K": 352.7424206592262,
+    "T_footprint_2_mean_K": 352.74146293333337,
+    "T_footprint_1_max_K": 353.4225710483,
+    "T_footprint_2_max_K": 353.4263329197,
+    "Q_convective_W": 40.000000000000036,
+    "Q_convective_vtu_W": 40.00000000011967,
+    "Q_input_W": 40.0,
+    "energy_balance_residual_rel": 8.881784197001252e-16,
+    "convective_area_m2": 0.03272,
+    "footprint_area_m2": 0.000336,
+    "R_th_hotspot_K_per_W": 1.3356583229924994,
+    "R_th_footprint_mean_K_per_W": 1.3185485449069945
+  },
+  "mesh": {
+    "nodes": 31168,
+    "bulk_elements": 112786,
+    "boundary_elements": 47912,
+    "element_types": {
+      "303": 47912,
+      "504": 112786
+    },
+    "dimension": 3,
+    "bodies": {
+      "1": 112786
+    },
+    "boundaries": {
+      "1": {
+        "elements": 430,
+        "nodes": 243,
+        "bbox_min": [
+          0.022,
+          0.0195,
+          0.0
+        ],
+        "bbox_max": [
+          0.038,
+          0.0405,
+          0.0
+        ]
+      },
+      "2": {
+        "elements": 434,
+        "nodes": 245,
+        "bbox_min": [
+          0.062,
+          0.0195,
+          0.0
+        ],
+        "bbox_max": [
+          0.078,
+          0.0405,
+          0.0
+        ]
+      },
+      "3": {
+        "elements": 40424,
+        "nodes": 20328,
+        "bbox_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bbox_max": [
+          0.1,
+          0.06,
+          0.031
+        ]
+      },
+      "4": {
+        "elements": 6624,
+        "nodes": 3480,
+        "bbox_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bbox_max": [
+          0.1,
+          0.06,
+          0.0
+        ]
+      }
+    },
+    "names": {
+      "bodies": {
+        "heatsink": 1
+      },
+      "boundaries": {
+        "footprint_1": 1,
+        "footprint_2": 2,
+        "convective": 3,
+        "bottom": 4
+      }
+    },
+    "bbox_min": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bbox_max": [
+      0.1,
+      0.06,
+      0.031
+    ],
+    "source": "mesh.msh"
+  }
+}

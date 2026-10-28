@@ -1,0 +1,238 @@
+{
+  "schema": "aipe.field-simulation/example-summary/0.1",
+  "example": "heatsink_to247",
+  "status": "executed",
+  "all_checks_passed": true,
+  "provenance": {
+    "platform": "Linux 6.17.0-1022-azure (x86_64)",
+    "python": "3.11.17",
+    "elmersolver": "26.2",
+    "elmergrid": "26.2",
+    "gmsh": "4.15.2",
+    "elmer_source": "PATH",
+    "ci": {
+      "service": "GitHub Actions",
+      "repository": "FulongLi/AIPE-Field-Simulation",
+      "sha": "6096bc485aa21de6ae177436f268b30173e54283",
+      "run_id": "40704734500",
+      "image": "ubuntu24 20261023.334.3",
+      "run_url": "https://github.com/FulongLi/AIPE-Field-Simulation/actions/runs/40704734500"
+    }
+  },
+  "parameters": {
+    "base_length_m": 0.1,
+    "base_width_m": 0.06,
+    "base_thickness_m": 0.006,
+    "fin_count": 8,
+    "fin_thickness_m": 0.002,
+    "fin_height_m": 0.025,
+    "footprint_length_m": 0.016,
+    "footprint_width_m": 0.021,
+    "footprint_offset_m": 0.02,
+    "device_power_W": 20.0,
+    "h_W_per_m2_K": 25.0,
+    "T_ambient_K": 300.0,
+    "bottom_convective": false,
+    "k_W_per_m_K": 200.0,
+    "density_kg_per_m3": 2700.0,
+    "heat_capacity_J_per_kg_K": 900.0,
+    "h_levels_m": [
+      0.003,
+      0.002,
+      0.0014
+    ]
+  },
+  "results": {
+    "T_max_K": {
+      "value": 353.4263329197,
+      "unit": "K",
+      "note": "hotspot (finest mesh)"
+    },
+    "T_rise_hotspot_K": {
+      "value": 53.42633291969997,
+      "unit": "K",
+      "note": "above ambient"
+    },
+    "T_footprint_1_mean_K": {
+      "value": 352.7424206592262,
+      "unit": "K",
+      "note": "area-mean over the TO-247 footprint"
+    },
+    "T_footprint_2_mean_K": {
+      "value": 352.74146293333337,
+      "unit": "K",
+      "note": ""
+    },
+    "R_th_hotspot_K_per_W": {
+      "value": 1.3356583229924994,
+      "unit": "K/W",
+      "note": "(T_max - T_amb)/40 W"
+    },
+    "R_th_footprint_mean_K_per_W": {
+      "value": 1.3185485449069945,
+      "unit": "K/W",
+      "note": "(mean footprint T - T_amb)/40 W"
+    },
+    "Q_convective_W": {
+      "value": 40.000000000000036,
+      "unit": "W",
+      "note": "must equal the 40 W input"
+    },
+    "convective_area_m2": {
+      "value": 0.03272,
+      "unit": "m^2",
+      "note": ""
+    },
+    "h_W_per_m2_K": {
+      "value": 25.0,
+      "unit": "W/m^2/K",
+      "note": "supplied film coefficient (no CFD)"
+    }
+  },
+  "checks": [
+    {
+      "name": "energy_conservation",
+      "passed": true,
+      "value": 8.881784197001252e-16,
+      "criterion": "|value| <= 1e-06",
+      "description": "|h*(int T dA - T_amb A) - 40 W| / 40 W on the finest mesh (Robin integral from SaveScalars)"
+    },
+    {
+      "name": "vtu_vs_savescalars_convective_heat",
+      "passed": true,
+      "value": 2.990852010498199e-12,
+      "criterion": "|value| <= 1e-06",
+      "description": "independent numpy boundary integral from the VTU vs SaveScalars"
+    },
+    {
+      "name": "footprint_area",
+      "passed": true,
+      "value": 1.6133960900081909e-16,
+      "criterion": "|value| <= 1e-09",
+      "description": "imprinted footprint area vs 16 mm x 21 mm"
+    },
+    {
+      "name": "T_max_mesh_sensitivity",
+      "passed": true,
+      "value": 0.0006688275565102925,
+      "criterion": "|value| <= 0.02",
+      "description": "relative change of the hotspot temperature rise between the two finest meshes"
+    },
+    {
+      "name": "convective_area_vs_closed_form",
+      "passed": true,
+      "value": 0.0,
+      "criterion": "<= 1e-9",
+      "description": "meshed convective area vs the closed-form area of the parametric geometry"
+    },
+    {
+      "name": "footprint_symmetry",
+      "passed": true,
+      "value": 1.7926101989013047e-05,
+      "criterion": "<= 1e-3",
+      "description": "|T_fp1 - T_fp2| / T_rise: the two devices sit symmetrically on a symmetric sink"
+    },
+    {
+      "name": "fin_theory_cross_check",
+      "passed": true,
+      "value": 1.0547500074249623,
+      "criterion": "1.0 <= ratio <= 1.3",
+      "description": "R_th(FEM, mean footprint) / R_th(isothermal-base fin estimate): spreading and base conduction can only add resistance; an engineering plausibility bound, not a verification"
+    },
+    {
+      "name": "reproduces_recorded_run",
+      "passed": true,
+      "value": 7.572202681587487e-05,
+      "criterion": "<= 1e-2",
+      "description": "|T_rise(new) - T_rise(recorded)| / T_rise(recorded), recorded = results/heatsink_h25 (Windows 11, Elmer 9.0, Gmsh 4.15.2, 2026-10-21)"
+    }
+  ],
+  "fin_estimate": {
+    "fin_efficiency": 0.9719450801302997,
+    "R_th_fin_estimate_K_per_W": 1.2501052719838919,
+    "R_th_fem_footprint_mean_K_per_W": 1.3185485449069945,
+    "ratio": 1.0547500074249623,
+    "areas_m2": {
+      "fin_each_m2": 0.0032199999999999998,
+      "fins_m2": 0.025759999999999998,
+      "base_top_exposed_m2": 0.00504,
+      "base_edges_m2": 0.00192,
+      "convective_m2": 0.03272,
+      "footprint_m2": 0.00033600000000000004,
+      "bottom_uncovered_m2": 0.005328,
+      "volume_m3": 6e-05
+    }
+  },
+  "recorded_comparison": {
+    "recorded": "results/heatsink_h25 (Windows 11, Elmer 9.0, Gmsh 4.15.2, 2026-10-21)",
+    "quantities": {
+      "T_max_K": {
+        "unit": "K",
+        "recorded": 353.4222876758,
+        "new": 353.4263329197,
+        "difference": 0.004045243899952311
+      },
+      "T_footprint_1_mean_K": {
+        "unit": "K",
+        "recorded": 352.74273610238095,
+        "new": 352.7424206592262,
+        "difference": -0.0003154431547613967
+      },
+      "T_footprint_2_mean_K": {
+        "unit": "K",
+        "recorded": 352.7416646883929,
+        "new": 352.74146293333337,
+        "difference": -0.00020175505954966866
+      },
+      "R_th_hotspot_K_per_W": {
+        "unit": "K/W",
+        "recorded": 1.3355571918950004,
+        "new": 1.3356583229924994,
+        "difference": 0.00010113109749898541
+      },
+      "R_th_footprint_mean_K_per_W": {
+        "unit": "K/W",
+        "recorded": 1.3185550098846732,
+        "new": 1.3185485449069945,
+        "difference": -6.4649776787550906e-06
+      },
+      "Q_convective_W": {
+        "unit": "W",
+        "recorded": 40.00000000025001,
+        "new": 40.000000000000036,
+        "difference": -2.4997603986776085e-10
+      }
+    },
+    "levels": [
+      {
+        "level": 0,
+        "recorded_elements": 22010,
+        "recorded_T_max_K": 353.3335187501
+      },
+      {
+        "level": 1,
+        "recorded_elements": 50893,
+        "recorded_T_max_K": 353.3916098273
+      },
+      {
+        "level": 2,
+        "recorded_elements": 113008,
+        "recorded_T_max_K": 353.4222876758
+      }
+    ]
+  },
+  "model_summary": "model/summary.json",
+  "figures": {
+    "geometry": "figures/1_geometry_and_mesh.png",
+    "temperature_3d": "figures/2_temperature_3d.png",
+    "bottom_map": "figures/3_base_bottom_temperature.png",
+    "profile": "figures/4_centreline_profile.png",
+    "convergence": "figures/5_mesh_convergence.png"
+  },
+  "timing_s": {
+    "level0_s": 2.771,
+    "level1_s": 5.769,
+    "level2_s": 12.69,
+    "total_s": 21.231
+  }
+}

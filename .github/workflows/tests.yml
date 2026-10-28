@@ -38,7 +38,7 @@ jobs:
           if-no-files-found: ignore
 
   solver:
-    name: executed Gmsh + Elmer solver tests
+    name: executed Gmsh + Elmer solver tests and heat-sink example
     # Elmer FEM is not in the Ubuntu archive; the ElmerCSC PPA publishes Elmer 9.0 for the LTS releases
     # up to 24.04 (noble) but not for 26.04, which ubuntu-latest now resolves to. Pin the image.
     runs-on: ubuntu-24.04
@@ -76,6 +76,8 @@ jobs:
           print(f"solver tests: {tests} collected, {skipped} skipped")
           assert tests > 0 and skipped == 0, "solver tests must execute when Elmer is installed"
           EOF
+      - name: Heat-sink example end to end (inputs -> Gmsh -> Elmer -> checks -> figures, exits non-zero on a failed check)
+        run: python examples/heatsink_to247/run_example.py --out runs/example-heatsink --curate runs/example-heatsink-results
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -83,4 +85,10 @@ jobs:
           path: |
             pytest-solver.xml
             runs/qualify/tool-manifest.json
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: heatsink-example-results
+          path: runs/example-heatsink-results
           if-no-files-found: ignore

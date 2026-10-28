@@ -118,3 +118,21 @@ def structured_rectangle(gmsh, x0: float, y0: float, lx: float, ly: float, nx: i
     if recombine:
         gmsh.model.mesh.setRecombine(2, s)
     return s
+
+
+def surface_triangles(gmsh, boundary_groups: dict[str, int]) -> tuple[np.ndarray, dict[str, np.ndarray]]:
+    """Nodes and the linear triangles of each named 2-D physical group of the current mesh (for plotting)."""
+    node_tags, coords, _ = gmsh.model.mesh.getNodes()
+    lookup = np.zeros(int(node_tags.max()) + 1, dtype=int)
+    lookup[node_tags.astype(int)] = np.arange(node_tags.size)
+    points = np.asarray(coords).reshape(-1, 3)
+    out: dict[str, np.ndarray] = {}
+    for name, tag in boundary_groups.items():
+        parts = []
+        for entity in gmsh.model.getEntitiesForPhysicalGroup(2, tag):
+            types, _, nodes = gmsh.model.mesh.getElements(2, entity)
+            for etype, enodes in zip(types, nodes):
+                if etype == 2:  # 3-node triangle
+                    parts.append(lookup[np.asarray(enodes, dtype=int)].reshape(-1, 3))
+        out[name] = np.vstack(parts) if parts else np.zeros((0, 3), dtype=int)
+    return points, out

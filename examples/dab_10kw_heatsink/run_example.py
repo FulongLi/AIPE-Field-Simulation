@@ -125,20 +125,37 @@ def outer_triangles(mesh, record) -> np.ndarray:
     return tris[mask[idx]]
 
 
-def top_surface(mesh, record):
-    """Upward-facing outer triangles at the base top / pad top (z >= 8 mm - eps) for an x-y map."""
+def top_layers(mesh, record) -> list:
+    """x-y triangulations of the horizontal top faces, one per height (base top 8 mm, pad top 8.25 mm), lowest first.
+
+    The layers are kept apart because the pad outline projects onto the same x-y points as the base top around it.
+    """
     import matplotlib.tri as mtri
 
     tris = outer_triangles(mesh, record)
     p = mesh.points
     n = np.cross(p[tris[:, 1]] - p[tris[:, 0]], p[tris[:, 2]] - p[tris[:, 0]])
     zc = p[tris].mean(axis=1)[:, 2]
-    top_z = p[:, 2].max()  # pad top
-    sel = tris[(np.abs(n[:, 2]) > 0.99 * np.linalg.norm(n, axis=1)) & (zc >= 0.008 - 1e-6) & (zc <= top_z + 1e-9)]
-    used = np.unique(sel)
-    remap = -np.ones(mesh.n_points, dtype=int)
-    remap[used] = np.arange(used.size)
-    return mtri.Triangulation(p[used, 0], p[used, 1], remap[sel]), used
+    flat = (np.abs(n[:, 2]) > 0.99 * np.linalg.norm(n, axis=1)) & (zc >= 0.008 - 1e-6)
+    layers = []
+    for z0 in sorted(set(np.round(zc[flat], 7))):
+        sel = tris[flat & (np.abs(zc - z0) < 1e-7)]
+        used = np.unique(sel)
+        remap = -np.ones(mesh.n_points, dtype=int)
+        remap[used] = np.arange(used.size)
+        layers.append((mtri.Triangulation(p[used, 0], p[used, 1], remap[sel]), used))
+    return layers
+
+
+def top_profile(mesh, record, x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """Temperature [degC] of the uppermost top face along (x, y)."""
+    import matplotlib.tri as mtri
+
+    out = np.full(x.shape, np.nan)
+    for tri, used in top_layers(mesh, record):
+        v = mtri.LinearTriInterpolator(tri, mesh.point_data["temperature"][used] - C0)(x, y)
+        out = np.where(np.ma.getmaskarray(v), out, np.ma.getdata(v))
+    return out
 
 
 def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devices: list, t_lim: tuple) -> None:
@@ -146,7 +163,6 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import matplotlib.tri as mtri
 
     from aipe_fieldsim.plots import surface_plot_3d
 
@@ -157,9 +173,11 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
                     title=f"Heat-sink surface temperature, finest mesh ({levels[-1]['elements']} tetrahedra), "
                           f"T_max = {final['results']['T_max_K']['value'] - C0:.1f} °C")
 
-    tri, used = top_surface(mesh, record)
     fig, (ax, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.6), dpi=150, gridspec_kw={"width_ratios": [1.15, 1]})
-    cs = ax.tricontourf(tri, T_C[used], levels=24, cmap="inferno")
+    layers = top_layers(mesh, record)
+    contour_levels = np.linspace(min(T_C[u].min() for _, u in layers), max(T_C[u].max() for _, u in layers), 25)
+    for tri, used in layers:  # pad top drawn last, over the base top
+        cs = ax.tricontourf(tri, T_C[used], levels=contour_levels, cmap="inferno")
     fig.colorbar(cs, ax=ax, label="temperature [°C]")
     ax.set_aspect("equal")
     ax.set_xlabel("x [m]")
@@ -179,8 +197,7 @@ def result_figures(final: dict, closures: dict, sweep: list, figures: Path, devi
     y = np.linspace(-0.04, 0.04, 801)
     for lvl in levels:
         m_l, rec_l = level_mesh(Path(lvl["case_dir"]))
-        tri_l, used_l = top_surface(m_l, rec_l)
-        t = mtri.LinearTriInterpolator(tri_l, m_l.point_data["temperature"][used_l] - C0)(np.full_like(y, xc), y)
+        t = top_profile(m_l, rec_l, np.full_like(y, xc), y)
         ax2.plot(y * 1e3, t, lw=1.4 if lvl is levels[-1] else 0.9, label=f"level {lvl['level']}: {lvl['elements']} tets")
     ax.axvline(xc, color="w", lw=0.6, alpha=0.7)
     ax2.set_xlabel(f"y at x = {xc*1e3:.1f} mm (through both device centres) [mm]")

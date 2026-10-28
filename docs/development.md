@@ -10,7 +10,8 @@ aipe-fieldsim doctor                            # locate tools, print versions
 aipe-fieldsim doctor --qualify runs/qualify     # run tiny known-answer cases (Gmsh mesh, Elmer slab, T_max = 305 K)
 ```
 
-Python 3.10+ is required. Tested with Python 3.10.11, numpy 2.2.6, matplotlib 3.10.9 on Windows 11.
+Python 3.10+ is required. The recorded runs in `results/` used Python 3.10.11, numpy 2.2.6, matplotlib 3.10.9 on
+Windows 11; CI runs Python 3.10-3.12 on Ubuntu (see "Continuous integration" below).
 
 ## External tools (official download channels and licences)
 
@@ -22,6 +23,19 @@ Python 3.10+ is required. Tested with Python 3.10.11, numpy 2.2.6, matplotlib 3.
 
 No administrator rights are needed: unpack the portable Elmer zip anywhere and point the package at it
 (see the tool discovery order in [architecture.md](architecture.md)).
+
+On Ubuntu 20.04-24.04 Elmer comes from the ElmerCSC PPA (this is what CI uses; the package is versioned
+`9.0-0ppa...` and its binaries report v26.2). Ubuntu 26.04 has neither an archive package nor a PPA build yet.
+The Gmsh wheel needs the system OpenGL/X11 client libraries even when it runs headless:
+
+```bash
+sudo apt-get install -y libglu1-mesa libxcursor1 libxft2 libxinerama1 libxrender1   # Gmsh wheel (libGLU.so.1 etc.)
+sudo add-apt-repository -y ppa:elmer-csc-ubuntu/elmer-csc-ppa
+sudo apt-get update && sudo apt-get install -y elmerfem-csc                          # ElmerSolver, ElmerGrid on PATH
+```
+
+macOS has no packaged Elmer build; there the unit and Gmsh-only tests and `run_example.py --geometry-only` run,
+and FEM execution needs a Linux machine, WSL2 or the Windows portable build.
 
 New code in this repository is MIT licensed (see `LICENSE`). The package calls, but does not redistribute,
 Gmsh (GPL-2.0-or-later) and Elmer FEM (GPL-2.0-or-later / LGPL-2.1); obtain them from the official channels
@@ -43,12 +57,26 @@ pytest                                                   # unit tests + solver t
 ## Tests
 
 ```bash
-pytest                 # 37 tests: 30 unit tests (SIF templating, VTU reader, SaveData parsers, analytic formulas,
-                       #           tool discovery, mesh inspection, hashing, evidence, aipe.yaml schema) + 7 solver tests
-pytest -m "not solver" # unit tests only
+pytest                 # 42 tests: 34 unit tests (SIF templating, VTU reader, SaveData parsers, analytic formulas,
+                       #           tool discovery, mesh inspection, hashing, evidence, materials/physics, aipe.yaml),
+                       #           1 Gmsh-only mesh test (heat-sink geometry), 7 solver tests
+pytest -m "not solver" # unit and mesh tests only (no Elmer needed)
+AIPE_REQUIRE_SOLVER=1 pytest -m solver   # fail instead of skip when Elmer or Gmsh is missing
 ```
 
-Solver tests (marker `solver`) execute the Elmer qualification case, the coarsest level of all four benchmarks and
-small instances of both models; they are skipped with an explicit reason when Gmsh or Elmer are not found. The
-`aipe.yaml` manifest is validated against the AIPE-Registry schema when a sibling `AIPE-Registry` checkout exists
-(`python ../AIPE-Registry/scripts/validate.py aipe.yaml ../AIPE-Core/aipe.yaml` reports no diagnostics).
+Markers: `solver` tests execute the Elmer qualification case, the coarsest level of all four benchmarks and
+small instances of both models; `mesh` tests run the Gmsh SDK only. Both skip with an explicit reason when the
+tool is missing, unless `AIPE_REQUIRE_SOLVER=1` / `AIPE_REQUIRE_GMSH=1` is set, in which case collection fails.
+The `aipe.yaml` manifest is validated against the AIPE-Registry schema when a sibling `AIPE-Registry` checkout
+exists (`python ../AIPE-Registry/scripts/validate.py aipe.yaml ../AIPE-Core/aipe.yaml` reports no diagnostics).
+
+## Continuous integration
+
+`.github/workflows/tests.yml` runs on every push and pull request:
+
+| Job | Runner | What it executes |
+| --- | --- | --- |
+| unit tests (Python 3.10, 3.11, 3.12) | `ubuntu-latest` | `pytest -m "not solver"` with `AIPE_REQUIRE_GMSH=1`: unit tests plus the Gmsh heat-sink geometry test |
+| executed Gmsh + Elmer solver tests and heat-sink example | `ubuntu-24.04` (Elmer from the ElmerCSC PPA) | `aipe-fieldsim doctor --qualify` (known-answer Gmsh and Elmer cases), `pytest -m solver` with `AIPE_REQUIRE_SOLVER=1` and an assertion that no solver test was skipped, then [`examples/heatsink_to247`](../examples/heatsink_to247/README.md) end to end; its figures, report and summaries are uploaded as the `heatsink-example-results` artifact |
+
+The solver job is pinned to 24.04 because the PPA publishes no build for 26.04 (the current `ubuntu-latest`).

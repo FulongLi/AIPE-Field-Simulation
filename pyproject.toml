@@ -36,6 +36,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = [
-  "solver: executes Gmsh/ElmerGrid/ElmerSolver (skipped automatically when the tools are missing)",
+  "solver: executes Gmsh/ElmerGrid/ElmerSolver (skipped when the tools are missing unless AIPE_REQUIRE_SOLVER=1)",
+  "mesh: executes the Gmsh python SDK only (skipped when gmsh is missing unless AIPE_REQUIRE_GMSH=1)",
 ]
 addopts = "-ra"

@@ -59,6 +59,10 @@ Energy conservation is verified both from SaveScalars and from an independent nu
 the VTU faces (agreement 2e-12). The film coefficient is an input, not a CFD result (see
 [limitations.md](limitations.md)).
 
+The table above is the recorded Windows run. The same h = 25 W/m²K case packaged as a complete example, with
+3-D figures, extra engineering checks and a comparison with this recorded run, is in
+[`examples/heatsink_to247`](../examples/heatsink_to247/README.md); CI re-executes it on every push.
+
 ## Python API
 
 ```python

@@ -1,0 +1,35 @@
+{
+  "_about": "Engineering inputs for the heat-sink example. SI units; every key carries its unit. These are the same values as the previously recorded run in results/heatsink_h25, so the new execution can be compared with it.",
+  "geometry": {
+    "_note": "Aluminium base plate with straight full-depth fins; the outer fins are flush with the base ends.",
+    "base_length_m": 0.100,
+    "base_width_m": 0.060,
+    "base_thickness_m": 0.006,
+    "fin_count": 8,
+    "fin_thickness_m": 0.002,
+    "fin_height_m": 0.025
+  },
+  "devices": {
+    "_note": "Two TO-247 packages on the base bottom, centred at x = L/2 -+ offset, y = W/2. Each loss enters as a uniform heat flux over its footprint.",
+    "device_power_W": 20.0,
+    "footprint_length_m": 0.016,
+    "footprint_width_m": 0.021,
+    "footprint_offset_m": 0.020
+  },
+  "cooling": {
+    "_note": "Supplied film coefficient on every exposed face (25 W/m^2/K is typical of natural convection, 80 of moderate forced air); it is an input, not a CFD result. The uncovered bottom is adiabatic unless bottom_convective is true.",
+    "h_W_per_m2_K": 25.0,
+    "T_ambient_K": 300.0,
+    "bottom_convective": false
+  },
+  "material": {
+    "_note": "Aluminium from aipe_fieldsim.materials (k = 200 W/m/K); density and heat capacity do not affect a steady solve.",
+    "k_W_per_m_K": 200.0,
+    "density_kg_per_m3": 2700.0,
+    "heat_capacity_J_per_kg_K": 900.0
+  },
+  "mesh": {
+    "_note": "Maximum tetrahedron size per refinement level (minimum = half of it).",
+    "h_levels_m": [0.003, 0.002, 0.0014]
+  }
+}

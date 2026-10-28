@@ -37,7 +37,7 @@ tools:
     interfaces: [cli, sif]
     platforms: [windows, linux, macos]
     url: 'https://www.elmerfem.org/'
-    limitations: ['ElmerSolver GPL-2.0-or-later, elmersolver library LGPL-2.1; portable Windows build 9.0 (Release 2026-01-20) qualified. Set AIPE_ELMERSOLVER or ELMER_HOME when the binaries are not on PATH. Serial (no MPI) execution only in this package.']
+    limitations: ['ElmerSolver GPL-2.0-or-later, elmersolver library LGPL-2.1; portable Windows build 9.0 (Release 2026-01-20) and the Ubuntu 24.04 ElmerCSC PPA build 26.2 qualified. Set AIPE_ELMERSOLVER or ELMER_HOME when the binaries are not on PATH. Serial (no MPI) execution only in this package.']
   - id: openfoam
     name: OpenFOAM
     capabilities: [conjugate-heat-transfer-cfd]
@@ -67,14 +67,19 @@ validation:
     - tests/test_analytic.py
     - tests/test_tools_and_mesh.py
     - tests/test_manifest.py
+    - tests/test_physics_and_geometry.py
+    - .github/workflows/tests.yml
     - results/benchmarks.md
+    - examples/heatsink_to247/README.md
   limitations:
-    - 'Tested means: unit tests of parsers/templating/analytic formulas plus end-to-end solver tests executed on Windows 11 with Gmsh 4.15.2 and Elmer 9.0; the solver tests skip when the tools are absent.'
+    - 'Tested means: unit tests of parsers/templating/analytic formulas plus end-to-end solver tests executed on Windows 11 with Gmsh 4.15.2 and Elmer 9.0 (recorded results) and on every push in GitHub Actions on Ubuntu 24.04 with Gmsh 4.15.2 and Elmer 26.2 from the ElmerCSC PPA, where a skipped solver test fails the job; locally the solver tests skip when the tools are absent.'
     - 'Benchmarks are verified against closed-form solutions only; no measured validation of any transformer or heat-sink result.'
     - 'The transformer AC winding-loss factor uses a homogenised solid-block conductivity and is an approximation indicator, not a Litz/foil loss prediction; 3-D transformer models are not provided.'
     - 'CFD (OpenFOAM) is blocked on this platform; heat-sink film coefficients are supplied values.'
 documentation:
   - README.md
+  - docs/architecture.md
+  - examples/heatsink_to247/README.md
   - results/benchmarks.md
   - docs/jobs/openfoam-heatsink-cfd-job.md
   - LICENSE

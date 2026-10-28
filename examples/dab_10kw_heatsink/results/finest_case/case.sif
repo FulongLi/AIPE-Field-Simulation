@@ -1,0 +1,144 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "mesh"
+End
+
+Simulation
+  Coordinate System = Cartesian 3D
+  Simulation Type = Steady State
+  Steady State Max Iterations = 1
+  Output Intervals = 1
+  Max Output Level = 5
+End
+
+Equation 1
+  Active Solvers(3) = 1 2 3
+End
+
+Solver 1
+  Equation = Heat Equation
+  Procedure = "HeatSolve" "HeatSolver"
+  Variable = Temperature
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStabl
+  BiCGstabl polynomial degree = 4
+  Linear System Max Iterations = 5000
+  Linear System Convergence Tolerance = 1e-10
+  Linear System Preconditioning = ILU1
+  Linear System Residual Output = 100
+  Linear System Abort Not Converged = Logical True
+  Nonlinear System Max Iterations = 1
+  Nonlinear System Convergence Tolerance = 1e-08
+  Steady State Convergence Tolerance = 1e-08
+End
+
+Solver 2
+  Exec Solver = After All
+  Equation = SaveScalars
+  Procedure = "SaveData" "SaveScalars"
+  Filename = "scalars.dat"
+  Variable 1 = Temperature
+  Operator 1 = max
+  Variable 2 = Temperature
+  Operator 2 = min
+  Variable 3 = Temperature
+  Operator 3 = boundary int
+  Mask Name 3 = Q1 Case
+  Variable 4 = Temperature
+  Operator 4 = area
+  Mask Name 4 = Q1 Case
+  Variable 5 = Temperature
+  Operator 5 = boundary max
+  Mask Name 5 = Q1 Case
+  Variable 6 = Temperature
+  Operator 6 = boundary int
+  Mask Name 6 = Q2 Case
+  Variable 7 = Temperature
+  Operator 7 = area
+  Mask Name 7 = Q2 Case
+  Variable 8 = Temperature
+  Operator 8 = boundary max
+  Mask Name 8 = Q2 Case
+  Variable 9 = Temperature
+  Operator 9 = boundary int
+  Mask Name 9 = Conv Side
+  Variable 10 = Temperature
+  Operator 10 = area
+  Mask Name 10 = Conv Side
+End
+
+Solver 3
+  Exec Solver = After All
+  Equation = ResultOutput
+  Procedure = "ResultOutputSolve" "ResultOutputSolver"
+  Output File Name = "cad_heatsink"
+  Vtu Format = Logical True
+  Binary Output = Logical True
+  Save Geometry Ids = Logical True
+End
+
+Body 1
+  Name = "heatsink"
+  Target Bodies(1) = 1
+  Equation = 1
+  Material = 1
+End
+
+Body 2
+  Name = "pad_Q1"
+  Target Bodies(1) = 2
+  Equation = 1
+  Material = 2
+End
+
+Body 3
+  Name = "pad_Q2"
+  Target Bodies(1) = 3
+  Equation = 1
+  Material = 2
+End
+
+Material 1
+  Name = "aluminium_6063"
+  Heat Conductivity = 209.0
+  Density = 2700.0
+  Heat Capacity = 900.0
+End
+
+Material 2
+  Name = "alumina"
+  Heat Conductivity = 24.0
+  Density = 3900.0
+  Heat Capacity = 880.0
+End
+
+! Q1: 15.5 W over the tab footprint (220.49 mm^2 meshed)
+Boundary Condition 1
+  Name = "Q1_loss"
+  Target Boundaries(1) = 1
+  Heat Flux = 70308.240372761
+  Q1 Case = Logical True
+End
+
+! Q2: 15.5 W over the tab footprint (220.49 mm^2 meshed)
+Boundary Condition 2
+  Name = "Q2_loss"
+  Target Boundaries(1) = 2
+  Heat Flux = 70308.35935845028
+  Q2 Case = Logical True
+End
+
+! fins and base underside (z <= 0): supplied film coefficient
+Boundary Condition 3
+  Name = "fin_side"
+  Target Boundaries(1) = 3
+  Heat Transfer Coefficient = 34.394
+  External Temperature = 313.15
+  Conv Side = Logical True
+End
+
+! base top and edges, hole walls, pad rims
+Boundary Condition 4
+  Name = "adiabatic"
+  Target Boundaries(1) = 4
+End

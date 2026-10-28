@@ -277,7 +277,7 @@ def qualify_elmer(workdir: Path) -> dict:
     return result
 
 
-def qualify_all(workdir: Path) -> dict:
+def qualify_all(workdir: Path | str = "runs/qualify") -> dict:
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     manifest = tool_manifest()

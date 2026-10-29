@@ -33,6 +33,13 @@ MATERIALS: dict[str, Material] = {
         "aluminium", thermal_conductivity_W_per_m_K=200.0, density_kg_per_m3=2700.0, heat_capacity_J_per_kg_K=900.0,
         electrical_conductivity_S_per_m=3.5e7,
         source="generic wrought heat-sink aluminium; k = 200 W/m/K lies between 6061-T6 (~167) and 6063-T5 (~209)"),
+    "aluminium_6063": Material(
+        "aluminium_6063", thermal_conductivity_W_per_m_K=209.0, density_kg_per_m3=2700.0, heat_capacity_J_per_kg_K=900.0,
+        electrical_conductivity_S_per_m=3.0e7,
+        source="Al-6063-T5 extrusion alloy, ASM typical k = 209 W/m/K (same value as AIPE-Thermal-Design)"),
+    "alumina": Material(
+        "alumina", thermal_conductivity_W_per_m_K=24.0, density_kg_per_m3=3900.0, heat_capacity_J_per_kg_K=880.0,
+        source="96 % Al2O3 isolation ceramic, typical k = 24 W/m/K at 25 C (handbook range 20-30); density as in AIPE-CAD-Agent"),
     "copper": Material(
         "copper", thermal_conductivity_W_per_m_K=398.0, density_kg_per_m3=8960.0, heat_capacity_J_per_kg_K=385.0,
         electrical_conductivity_S_per_m=5.8e7, source="annealed copper, 20 C (IACS 100 %)"),

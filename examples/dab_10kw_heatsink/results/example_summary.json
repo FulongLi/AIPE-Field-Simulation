@@ -1,0 +1,344 @@
+{
+  "schema": "aipe.field-simulation/example-summary/0.1",
+  "example": "dab_10kw_heatsink",
+  "status": "executed",
+  "all_checks_passed": true,
+  "provenance": {
+    "platform": "Linux 7.0.0-1017-azure (x86_64)",
+    "python": "3.11.17",
+    "elmersolver": "26.2",
+    "elmergrid": "26.2",
+    "gmsh": "4.15.2",
+    "ci": {
+      "service": "GitHub Actions",
+      "repository": "FulongLi/AIPE-Field-Simulation",
+      "sha": "c2130f119826210f505724cea515aeb853485222",
+      "run_id": "40713845240",
+      "image": "ubuntu24 20261026.354.1",
+      "run_url": "https://github.com/FulongLi/AIPE-Field-Simulation/actions/runs/40713845240"
+    }
+  },
+  "inputs": {
+    "_about": "Inputs for the 10 kW DAB primary half-bridge heat sink. Geometry from AIPE-CAD-Agent, operating point and loss model from AIPE-Thermal-Design (which takes its currents from the AIPE waveform run and its device data from the TI TIDA-010054 fact sheet). Every value here is an input with a stated source; nothing in this file is a result of this example.",
+    "cad": {
+      "step_file": "cad/dab_heatsink.step",
+      "metadata_file": "cad/dab_heatsink.metadata.json",
+      "heatsink_solid": "body",
+      "devices": [
+        "Q1",
+        "Q2"
+      ],
+      "tab_thickness_m": 0.0015,
+      "mounting_hole_diameter_m": 0.0045,
+      "mounting_hole_count": 4,
+      "screw_hole_diameter_m": 0.0032
+    },
+    "operating_point": {
+      "converter": "10 kW DAB, 800 V -> 400 V, 100 kHz; this sink carries one primary half-bridge (two C3M0075120K-class SiC MOSFETs, TO-247-4L)",
+      "I_rms_A": 9.67,
+      "R_ds_on_25C_ohm": 0.075,
+      "R_ds_on_factor_175C": 1.7,
+      "turn_off_loss_W": 6.75,
+      "turn_on_loss_W": 0.0,
+      "R_th_jc_K_per_W": 1.1,
+      "T_ambient_C": 40.0,
+      "T_j_design_C": 125.0,
+      "T_j_max_C": 175.0
+    },
+    "cooling": {
+      "h_W_per_m2_K": 34.394,
+      "h_sweep_W_per_m2_K": [
+        10.0,
+        20.0,
+        34.394,
+        50.0,
+        80.0
+      ]
+    },
+    "materials": {
+      "heatsink_material": "aluminium_6063",
+      "pad_material": "alumina"
+    },
+    "mesh": {
+      "mesh_levels_m": [
+        [
+          0.004,
+          0.0015,
+          0.0005
+        ],
+        [
+          0.003,
+          0.001,
+          0.00035
+        ],
+        [
+          0.0022,
+          0.0007,
+          0.00025
+        ]
+      ],
+      "sweep_level": 1
+    }
+  },
+  "devices": {
+    "Q1": {
+      "loss_W": 15.502031762845977,
+      "T_case_mean_C": 61.09993480680964,
+      "T_case_max_C": 61.818910171400034,
+      "T_j_C": 78.15216974594021,
+      "loss_at_T_j_W": 15.502737823944651,
+      "R_th_case_ambient_K_per_W": 1.3611077005647911
+    },
+    "Q2": {
+      "loss_W": 15.502057997607716,
+      "T_case_mean_C": 61.09979147272065,
+      "T_case_max_C": 61.81865200710001,
+      "T_j_C": 78.15205527008914,
+      "loss_at_T_j_W": 15.502734077365833,
+      "R_th_case_ambient_K_per_W": 1.3610961509740696
+    }
+  },
+  "h_sweep": [
+    {
+      "h": 10.0,
+      "R_case_ambient_K_per_W": {
+        "Q1": 3.809597283058812,
+        "Q2": 3.8096439423770883
+      },
+      "reference_loss_W": 17.035979,
+      "energy_residual": 5.0981170467982167e-11,
+      "closure": {
+        "Q1": {
+          "T_j_C": 123.37939426089464,
+          "loss_W": 16.9829396290009,
+          "T_case_C": 104.69816066899365,
+          "conduction_W": 10.2329396290009,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 4.909597283058812
+        },
+        "Q2": {
+          "T_j_C": 123.38033837706898,
+          "loss_W": 16.98297052814363,
+          "T_case_C": 104.69907079611099,
+          "conduction_W": 10.232970528143628,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 4.909643942377088
+        }
+      }
+    },
+    {
+      "h": 20.0,
+      "R_case_ambient_K_per_W": {
+        "Q1": 2.0835835686889856,
+        "Q2": 2.0836306221207583
+      },
+      "reference_loss_W": 17.035979,
+      "energy_residual": 2.5653769190349647e-11,
+      "closure": {
+        "Q1": {
+          "T_j_C": 90.65719345400863,
+          "loss_W": 15.91200367794004,
+          "T_case_C": 73.15398940827458,
+          "conduction_W": 9.16200367794004,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 3.1835835686889857
+        },
+        "Q2": {
+          "T_j_C": 90.65802925391499,
+          "loss_W": 15.912031032095493,
+          "T_case_C": 73.15479511860994,
+          "conduction_W": 9.162031032095493,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 3.1836306221207584
+        }
+      }
+    },
+    {
+      "h": 34.394,
+      "R_case_ambient_K_per_W": {
+        "Q1": 1.359716042088188,
+        "Q2": 1.359763588486583
+      },
+      "reference_loss_W": 17.035979,
+      "energy_residual": 1.0220216400281718e-11,
+      "closure": {
+        "Q1": {
+          "T_j_C": 78.13059621203288,
+          "loss_W": 15.502031762845977,
+          "T_case_C": 61.078361272902306,
+          "conduction_W": 8.752031762845977,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 2.4597160420881883
+        },
+        "Q2": {
+          "T_j_C": 78.13139780912269,
+          "loss_W": 15.502057997607716,
+          "T_case_C": 61.079134011754206,
+          "conduction_W": 8.752057997607716,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 2.459763588486583
+        }
+      }
+    },
+    {
+      "h": 50.0,
+      "R_case_ambient_K_per_W": {
+        "Q1": 1.044448646565747,
+        "Q2": 1.044496645639919
+      },
+      "reference_loss_W": 17.035979,
+      "energy_residual": 5.432513818709981e-12,
+      "closure": {
+        "Q1": {
+          "T_j_C": 72.87441227051391,
+          "loss_W": 15.33000677034679,
+          "T_case_C": 56.01140482313244,
+          "conduction_W": 8.58000677034679,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 2.1444486465657473
+        },
+        "Q2": {
+          "T_j_C": 72.87520363911457,
+          "loss_W": 15.33003267034936,
+          "T_case_C": 56.01216770173028,
+          "conduction_W": 8.58003267034936,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 2.144496645639919
+        }
+      }
+    },
+    {
+      "h": 80.0,
+      "R_case_ambient_K_per_W": {
+        "Q1": 0.7815917269563561,
+        "Q2": 0.7816404124842654
+      },
+      "reference_loss_W": 17.035979,
+      "energy_residual": 3.2179042026719525e-11,
+      "closure": {
+        "Q1": {
+          "T_j_C": 68.58038354309167,
+          "loss_W": 15.189471304342412,
+          "T_case_C": 51.871965108315,
+          "conduction_W": 8.439471304342412,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 1.8815917269563562
+        },
+        "Q2": {
+          "T_j_C": 68.58117157982757,
+          "loss_W": 15.189497095299327,
+          "T_case_C": 51.87272477499832,
+          "conduction_W": 8.439497095299327,
+          "switching_W": 6.75,
+          "R_th_total_K_per_W": 1.8816404124842654
+        }
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "energy_conservation",
+      "passed": true,
+      "value": 5.705810782307436e-11,
+      "criterion": "|value| <= 1e-06",
+      "description": "|h*(int T dA - T_amb A) - sum of losses| / sum of losses on the finest mesh (SaveScalars)"
+    },
+    {
+      "name": "vtu_vs_savescalars_convective_heat",
+      "passed": true,
+      "value": 6.085110340843813e-12,
+      "criterion": "|value| <= 1e-06",
+      "description": "independent numpy boundary integral from the VTU vs SaveScalars"
+    },
+    {
+      "name": "Q1_case_area_elmer_vs_gmsh",
+      "passed": true,
+      "value": 5.298405080146371e-14,
+      "criterion": "|value| <= 1e-09",
+      "description": "Elmer's area of the case footprint equals the meshed area used for the heat flux"
+    },
+    {
+      "name": "Q2_case_area_elmer_vs_gmsh",
+      "passed": true,
+      "value": 5.31069836339497e-14,
+      "criterion": "|value| <= 1e-09",
+      "description": "Elmer's area of the case footprint equals the meshed area used for the heat flux"
+    },
+    {
+      "name": "step_volumes_vs_cad_metadata",
+      "passed": true,
+      "value": 9.306207196295478e-16,
+      "criterion": "|value| <= 1e-09",
+      "description": "imported STEP solid volumes vs the CAD agent's metadata (worst relative difference)"
+    },
+    {
+      "name": "T_max_mesh_sensitivity",
+      "passed": true,
+      "value": 0.0009744852439003761,
+      "criterion": "|value| <= 0.02",
+      "description": "relative change of the hotspot temperature rise between the two finest meshes"
+    },
+    {
+      "name": "convective_area_vs_cad_metadata",
+      "passed": true,
+      "value": 5.983837758573914e-16,
+      "criterion": "<= 1e-6",
+      "description": "imported fin-side area vs the CAD agent's analytic convective area minus the 4 M4 and 2 M3 through-hole sections"
+    },
+    {
+      "name": "case_area_vs_cad_tab",
+      "passed": true,
+      "value": 1.229510532214906e-16,
+      "criterion": "<= 1e-9",
+      "description": "imprinted case footprint area vs CAD tab volume / tab thickness (prismatic tab)"
+    },
+    {
+      "name": "linearity_in_loss",
+      "passed": true,
+      "value": 6.493115825917159e-07,
+      "criterion": "<= 1e-5",
+      "description": "R_case-amb from the sweep solve (loss at 125 \u00b0C) equals the final solve (converged loss) on the same mesh: justifies the closed-form electrothermal closure"
+    },
+    {
+      "name": "electrothermal_consistency",
+      "passed": true,
+      "value": 4.554635866286907e-05,
+      "criterion": "<= 2e-3",
+      "description": "loss model evaluated at the finest-mesh junction temperature vs the loss used in the final solve"
+    },
+    {
+      "name": "device_symmetry",
+      "passed": true,
+      "value": 6.5692597780068274e-06,
+      "criterion": "<= 2e-3",
+      "description": "|T_case,Q1 - T_case,Q2| / T_rise: the devices sit mirror-symmetrically on the sink"
+    }
+  ],
+  "geometry_preview": {
+    "surface_triangles": {
+      "Q1_case": 87,
+      "Q2_case": 87,
+      "convective": 9744,
+      "adiabatic": 1940
+    },
+    "areas_m2": {
+      "Q1_case": 0.00022045402297863294,
+      "Q2_case": 0.00022045402297863294,
+      "convective": 0.05798029779437838,
+      "adiabatic": 0.009098802085251819
+    },
+    "step_volumes_m3": {
+      "body": 8.83623823550275e-05,
+      "Q1.pad": 9.955100574465833e-08,
+      "Q2.pad": 9.955100574465833e-08
+    }
+  },
+  "final_model_summary": "final/summary.json",
+  "figures": {
+    "geometry": "figures/1_cad_geometry_and_mesh.png",
+    "temperature_3d": "figures/2_temperature_3d.png",
+    "top_surface": "figures/3_top_surface_temperature.png",
+    "junction_vs_h": "figures/4_junction_temperature_vs_h.png",
+    "convergence": "figures/5_mesh_convergence.png"
+  }
+}

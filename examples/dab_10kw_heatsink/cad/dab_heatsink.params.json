@@ -1,0 +1,31 @@
+{
+  "kind": "heatsink",
+  "name": "dab_heatsink",
+  "description": "Plate-fin aluminium heat sink for one SiC half-bridge: two TO-247-4L devices on alumina isolation pads, M3 screw holes, four M4 corner mounting holes. Fins hang down from the base (z < 0). Illustrative model.",
+  "base": {"length": 0.080, "width": 0.080, "thickness": 0.008, "material": "aluminium_6063"},
+  "fins": {"thickness": 0.0015, "height": 0.035, "pitch": 0.005, "count": 12, "length": 0.060},
+  "devices": [
+    {
+      "name": "Q1", "package": "to247_4l", "position": [0.0286, 0.020], "rotation_deg": 0, "net": "primary",
+      "pad": {"thickness": 0.00025, "oversize": 0.0025, "material": "alumina"},
+      "screw_hole_diameter": 0.0032,
+      "lead_form": {"horizontal": 0.003, "vertical": 0.014}
+    },
+    {
+      "name": "Q2", "package": "to247_4l", "position": [0.0286, -0.020], "rotation_deg": 0, "net": "primary",
+      "pad": {"thickness": 0.00025, "oversize": 0.0025, "material": "alumina"},
+      "screw_hole_diameter": 0.0032,
+      "lead_form": {"horizontal": 0.003, "vertical": 0.014}
+    }
+  ],
+  "mounting_holes": {"diameter": 0.0045, "inset": 0.005},
+  "net": "pe",
+  "clearance_envelope_margin": 0.003,
+  "checks": {
+    "interference": {"enabled": true, "min_overlap_volume": 1e-12},
+    "clearance_pairs": [
+      {"net_a": "primary", "net_b": "pe", "required_clearance": 0.002, "required_creepage": 0.004,
+       "note": "illustrative functional-insulation value between device tabs/leads and the earthed heat sink"}
+    ]
+  }
+}

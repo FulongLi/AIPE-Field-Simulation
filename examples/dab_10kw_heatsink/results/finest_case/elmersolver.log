@@ -1,0 +1,174 @@
+ELMER SOLVER (v 26.2) STARTED AT: 2026/10/28 15:18:16
+ParCommInit: Initialize #PEs: 1
+MAIN: OMP_NUM_THREADS not set. Using only 1 thread per task.
+MAIN: 
+MAIN: =============================================================
+MAIN: ElmerSolver finite element software, Welcome!
+MAIN: This program is free software licensed under (L)GPL
+MAIN: Copyright April 1st 1995 -> , CSC - IT Center for Science Ltd.
+MAIN: Repository https://www.github.org/elmerCSC/elmerfem
+MAIN: Homepage https://www.elmerfem.org/,  Email elmeradm@csc.fi
+MAIN: Version: 26.2-unknown (Rev: unknown, Compiled: 2026-10-27)
+MAIN:  Running one task without MPI parallelization.
+MAIN:  Running with just one thread per task.
+MAIN:  HYPRE library linked in.
+MAIN:  MUMPS library linked in.
+MAIN:  Lua interpreter linked in.
+MAIN: =============================================================
+MAIN: 
+MAIN: 
+MAIN: -------------------------------------
+MAIN: Reading Model: case.sif
+LoadInputFile: Scanning input file: case.sif
+LoadInputFile: Scanning only size info
+LoadInputFile: First time visiting
+LoadInputFile: Reading base load of sif file
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 2
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 2
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 2
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 2
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 3
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 3
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 3
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 3
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 3
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 3
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 4
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 4
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 4
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 4
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 4
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 4
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 5
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 5
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 5
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 5
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 5
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 5
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 6
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 6
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 6
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 6
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 6
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 6
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 7
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 7
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 7
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 7
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 7
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 7
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 8
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 8
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 8
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 8
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 8
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 8
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 9
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 9
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 9
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 9
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 9
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 9
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 10
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 10
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 10
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 10
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 10
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 10
+LoadInputFile: Loading input file: case.sif
+LoadInputFile: Reading base load of sif file
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 2
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 2
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 2
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 2
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 3
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 3
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 3
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 3
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 3
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 3
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 4
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 4
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 4
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 4
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 4
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 4
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 5
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 5
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 5
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 5
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 5
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 5
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 6
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 6
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 6
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 6
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 6
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 6
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 7
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 7
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 7
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 7
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 7
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 7
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 8
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 8
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 8
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 8
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 8
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 8
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 9
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 9
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 9
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 9
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 9
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 9
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 10
+CheckKeyword: Found keyword type assuming suffix 1 for: variable 10
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 10
+CheckKeyword: Found keyword type assuming suffix 1 for: operator 10
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 10
+CheckKeyword: Found keyword type assuming suffix 1 for: mask name 10
+CheckKeyword:  Unlisted keyword: [q1 case] in section: [boundary condition 1]
+CheckKeyword:  Unlisted keyword: [q2 case] in section: [boundary condition 2]
+CheckKeyword:  Unlisted keyword: [conv side] in section: [boundary condition 3]
+LoadInputFile: Number of BCs: 4
+LoadInputFile: Number of Body Forces: 0
+LoadInputFile: Number of Initial Conditions: 0
+LoadInputFile: Number of Materials: 2
+LoadInputFile: Number of Equations: 1
+LoadInputFile: Number of Solvers: 3
+LoadInputFile: Number of Bodies: 3
+ElmerMeshReader: Base mesh name: ./mesh
+PrepareMesh: Preparing mesh for the future
+LoadMesh: Elapsed REAL time:     0.4542 (s)
+MAIN: -------------------------------------
+OptimizeBandwidth: Initial bandwidth for heat equation: 85492
+OptimizeBandwidth: Optimized bandwidth for heat equation: 2561
+MAIN: Number of timesteps to be saved: 1
+MAIN: 
+MAIN: -------------------------------------
+MAIN:  Steady state iteration:            1
+MAIN: -------------------------------------
+MAIN: 
+HeatSolver: ------------------------------------------------
+HeatSolver: Solving energy equation for temperature
+HeatSolver: Heat solver iteration: 1
+BiCGStabl:       16 0.9506E-10 0.9506E-10
+ComputeChange: NS (ITER=1) (NRM,RELC): (  331.86131      2.0000000     ) :: heat equation
+ComputeChange: SS (ITER=1) (NRM,RELC): (  331.86131      2.0000000     ) :: heat equation
+SaveScalars: -----------------------------------------
+SaveScalars: Saving scalar values of various kinds
+SaveScalars: Saving names of values to file: ./scalars.dat.names
+SaveScalars: Saving values to file: ./scalars.dat
+ResultOutputSolver: -------------------------------------
+ResultOutputSolver: Saving with prefix: cad_heatsink
+CreateListForSaving: Field Variables for Saving
+ResultOutputSolver: Saving in unstructured VTK XML (.vtu) format
+VtuOutputSolver: Saving results in VTK XML format with prefix: cad_heatsink
+VtuOutputSolver: Saving number of partitions: 1
+ResultOutputSolver: -------------------------------------
+MAIN: *** Elmer Solver: ALL DONE ***
+MAIN: The end
+SOLVER TOTAL TIME(CPU,REAL):         4.20        4.60
+ELMER SOLVER FINISHED AT: 2026/10/28 15:18:21

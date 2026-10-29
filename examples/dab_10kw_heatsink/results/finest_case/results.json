@@ -1,0 +1,135 @@
+{
+  "fem": {
+    "T_max_K": 334.9689101714,
+    "T_min_K": 327.1830009939,
+    "hotspot_xyz_m": [
+      0.0295454224823,
+      0.0207891256773,
+      0.00825
+    ],
+    "Q_input_W": 31.004089760453695,
+    "Q_convective_W": 31.00408975868466,
+    "Q_convective_vtu_W": 31.004089758495997,
+    "energy_balance_residual_rel": 5.705810782307436e-11,
+    "convective_area_m2": 0.05798694744085,
+    "convective_area_cad_m2": 0.05798029779437838,
+    "T_fin_side_mean_K": 328.6955485506862,
+    "devices": {
+      "Q1": {
+        "loss_W": 15.502031762845977,
+        "case_area_m2": 0.0002204866980123,
+        "case_area_meshed_m2": 0.00022048669801231168,
+        "case_area_cad_m2": 0.00022045402297863294,
+        "T_case_mean_K": 334.2499348068096,
+        "T_case_max_K": 334.9689101714,
+        "R_th_case_ambient_K_per_W": 1.3611077005647911
+      },
+      "Q2": {
+        "loss_W": 15.502057997607716,
+        "case_area_m2": 0.0002204866980123,
+        "case_area_meshed_m2": 0.0002204866980123117,
+        "case_area_cad_m2": 0.00022045402297863294,
+        "T_case_mean_K": 334.24979147272063,
+        "T_case_max_K": 334.9686520071,
+        "R_th_case_ambient_K_per_W": 1.3610961509740696
+      }
+    }
+  },
+  "mesh": {
+    "nodes": 85560,
+    "bulk_elements": 380178,
+    "boundary_elements": 82964,
+    "element_types": {
+      "303": 82964,
+      "504": 380178
+    },
+    "dimension": 3,
+    "bodies": {
+      "1": 281983,
+      "2": 49123,
+      "3": 49072
+    },
+    "boundaries": {
+      "1": {
+        "elements": 8273,
+        "nodes": 4282,
+        "bbox_min": [
+          0.016865,
+          0.0132,
+          0.00825
+        ],
+        "bbox_max": [
+          0.033815,
+          0.0268,
+          0.00825
+        ]
+      },
+      "2": {
+        "elements": 8259,
+        "nodes": 4275,
+        "bbox_min": [
+          0.016865,
+          -0.0268,
+          0.00825
+        ],
+        "bbox_max": [
+          0.033815,
+          -0.0132,
+          0.00825
+        ]
+      },
+      "3": {
+        "elements": 35436,
+        "nodes": 17833,
+        "bbox_min": [
+          -0.04,
+          -0.04,
+          -0.035
+        ],
+        "bbox_max": [
+          0.04,
+          0.04,
+          0.0
+        ]
+      },
+      "4": {
+        "elements": 30996,
+        "nodes": 15904,
+        "bbox_min": [
+          -0.04,
+          -0.04,
+          0.0
+        ],
+        "bbox_max": [
+          0.04,
+          0.04,
+          0.00825
+        ]
+      }
+    },
+    "names": {
+      "bodies": {
+        "heatsink": 1,
+        "pad_Q1": 2,
+        "pad_Q2": 3
+      },
+      "boundaries": {
+        "Q1_case": 1,
+        "Q2_case": 2,
+        "convective": 3,
+        "adiabatic": 4
+      }
+    },
+    "bbox_min": [
+      -0.04,
+      -0.04,
+      -0.035
+    ],
+    "bbox_max": [
+      0.04,
+      0.04,
+      0.00825
+    ],
+    "source": "mesh.msh"
+  }
+}

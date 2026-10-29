@@ -1,0 +1,1044 @@
+{
+  "schema": "aipe-cad-metadata/0.1",
+  "kind": "heatsink",
+  "name": "dab_heatsink",
+  "units": {
+    "length": "m",
+    "area": "m^2",
+    "volume": "m^3",
+    "mass": "kg",
+    "note": "FreeCAD geometry is in mm; converted here"
+  },
+  "generator": {
+    "package": "aipe_cad",
+    "freecad_version": "1.1.4"
+  },
+  "files": {
+    "fcstd": "dab_heatsink.FCStd",
+    "step": "dab_heatsink.step",
+    "step_keepouts": "dab_heatsink.keepouts.step",
+    "checks": "dab_heatsink.checks.json",
+    "render_png": "renders/dab_heatsink.png",
+    "metadata": "dab_heatsink.metadata.json"
+  },
+  "totals": {
+    "bbox_m": [
+      -0.04,
+      -0.04,
+      -0.035,
+      0.043335,
+      0.04,
+      0.024460000000000003
+    ],
+    "size_m": [
+      0.083335,
+      0.08,
+      0.05946
+    ],
+    "volume_m3": 9.274120236145047e-05,
+    "mass_kg": 0.25455883074004093,
+    "surface_area_m2": 0.073987631799819,
+    "body_count": 19,
+    "mass_by_material_kg": {
+      "aluminium_6063": 0.23857843235857407,
+      "epoxy_mold_compound": 0.005687950188162195,
+      "copper": 0.006772201577665654,
+      "alumina": 0.0007764978448083342,
+      "nylon_pa66": 0.00010764379445071994,
+      "steel": 0.0026361049763798674
+    }
+  },
+  "bodies": [
+    {
+      "name": "body",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "aluminium_6063",
+      "net": "pe",
+      "conductive": true,
+      "density_kg_m3": 2700.0,
+      "volume_m3": 8.836238235502743e-05,
+      "surface_area_m2": 0.06747383447473758,
+      "mass_kg": 0.23857843235857407,
+      "bbox_m": [
+        -0.04,
+        -0.04,
+        -0.035,
+        0.04,
+        0.04,
+        0.008
+      ],
+      "centre_of_mass_m": [
+        -3.2933584066255583e-05,
+        6.175668950065482e-20,
+        -0.0051973527460439884
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "note": "base plate with 12 fins (one extruded solid)"
+    },
+    {
+      "name": "Q1.body",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "epoxy_mold_compound",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 1900.0,
+      "volume_m3": 1.4968289968847881e-06,
+      "surface_area_m2": 0.001214207139940743,
+      "mass_kg": 0.0028439750940810974,
+      "bbox_m": [
+        0.016865,
+        0.01203,
+        0.00825,
+        0.040335,
+        0.02797,
+        0.013269999999999999
+      ],
+      "centre_of_mass_m": [
+        0.02949476136144604,
+        0.02,
+        0.011148821048947372
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 1.4968289968847881e-06,
+      "analytic_relative_error": 0.0
+    },
+    {
+      "name": "Q1.tab",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 3.3068103446794937e-07,
+      "surface_area_m2": 0.0005494283985070429,
+      "mass_kg": 0.0029629020688328265,
+      "bbox_m": [
+        0.016865,
+        0.0132,
+        0.00825,
+        0.033815,
+        0.0268,
+        0.00975
+      ],
+      "centre_of_mass_m": [
+        0.0254644240727051,
+        0.02,
+        0.009
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 3.3068103446794937e-07,
+      "analytic_relative_error": 0.0
+    },
+    {
+      "name": "Q1.pad",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "alumina",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 3900.0,
+      "volume_m3": 9.955100574465824e-08,
+      "surface_area_m2": 0.0008194947713822286,
+      "mass_kg": 0.0003882489224041671,
+      "bbox_m": [
+        0.014365000000000001,
+        0.010700000000000001,
+        0.008,
+        0.03631500000000001,
+        0.029299999999999996,
+        0.00825
+      ],
+      "centre_of_mass_m": [
+        0.025408883752549877,
+        0.02,
+        0.008125
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 9.955100574465824e-08,
+      "analytic_relative_error": 0.0,
+      "note": "electrical isolation pad"
+    },
+    {
+      "name": "Q1.lead_drain",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.180800000000004e-08,
+      "surface_area_m2": 6.047999999999993e-05,
+      "mass_kg": 0.00010579968000000037,
+      "bbox_m": [
+        0.040335,
+        0.014320000000000001,
+        0.01046,
+        0.043335,
+        0.015519999999999999,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487806,
+        0.014920000000000003,
+        0.016479512195121948
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q1.lead_source",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.180800000000001e-08,
+      "surface_area_m2": 6.0479999999999956e-05,
+      "mass_kg": 0.0001057996800000001,
+      "bbox_m": [
+        0.040335,
+        0.019399999999999997,
+        0.01046,
+        0.043335,
+        0.0206,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.042815487804878045,
+        0.019999999999999997,
+        0.016479512195121955
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q1.lead_driver_source",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.1808e-08,
+      "surface_area_m2": 6.0479999999999956e-05,
+      "mass_kg": 0.00010579968,
+      "bbox_m": [
+        0.040335,
+        0.02194,
+        0.01046,
+        0.043335,
+        0.02314,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487805,
+        0.022539999999999998,
+        0.016479512195121955
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q1.lead_gate",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.1808000000000035e-08,
+      "surface_area_m2": 6.047999999999993e-05,
+      "mass_kg": 0.00010579968000000031,
+      "bbox_m": [
+        0.040335,
+        0.024480000000000002,
+        0.01046,
+        0.043335,
+        0.02568,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487805,
+        0.02508,
+        0.01647951219512195
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q1.bushing",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "nylon_pa66",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 1140.0,
+      "volume_m3": 4.721219054856138e-08,
+      "surface_area_m2": 0.0002031875314191656,
+      "mass_kg": 5.382189722535997e-05,
+      "bbox_m": [
+        0.019115000000000004,
+        0.016501087862997144,
+        0.008,
+        0.026115000000000003,
+        0.023498912137002857,
+        0.014270000000000001
+      ],
+      "centre_of_mass_m": [
+        0.022615,
+        0.02,
+        0.01272109108252956
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 4.721219054856135e-08,
+      "analytic_relative_error": 7.008195154191875e-16,
+      "note": "insulating shoulder bushing"
+    },
+    {
+      "name": "Q1.screw",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "steel",
+      "net": "pe",
+      "conductive": true,
+      "density_kg_m3": 7850.0,
+      "volume_m3": 1.6790477556559664e-07,
+      "surface_area_m2": 0.00022866082129153307,
+      "mass_kg": 0.0013180524881899337,
+      "bbox_m": [
+        0.019865,
+        0.017250854749497755,
+        0.0005000000000000004,
+        0.025365000000000002,
+        0.022749145250502246,
+        0.01727
+      ],
+      "centre_of_mass_m": [
+        0.022615000000000003,
+        0.02,
+        0.010957551816561655
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 1.679047755655967e-07,
+      "analytic_relative_error": 3.152951369314177e-16,
+      "note": "mounting screw (thread engagement not modelled)"
+    },
+    {
+      "name": "Q2.body",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "epoxy_mold_compound",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 1900.0,
+      "volume_m3": 1.4968289968847881e-06,
+      "surface_area_m2": 0.001214207139940743,
+      "mass_kg": 0.0028439750940810974,
+      "bbox_m": [
+        0.016865,
+        -0.02797,
+        0.00825,
+        0.040335,
+        -0.01203,
+        0.013269999999999999
+      ],
+      "centre_of_mass_m": [
+        0.02949476136144604,
+        -0.02,
+        0.011148821048947372
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 1.4968289968847881e-06,
+      "analytic_relative_error": 0.0
+    },
+    {
+      "name": "Q2.tab",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 3.3068103446794937e-07,
+      "surface_area_m2": 0.0005494283985070429,
+      "mass_kg": 0.0029629020688328265,
+      "bbox_m": [
+        0.016865,
+        -0.0268,
+        0.00825,
+        0.033815,
+        -0.0132,
+        0.00975
+      ],
+      "centre_of_mass_m": [
+        0.0254644240727051,
+        -0.02,
+        0.009
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 3.3068103446794937e-07,
+      "analytic_relative_error": 0.0
+    },
+    {
+      "name": "Q2.pad",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "alumina",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 3900.0,
+      "volume_m3": 9.955100574465824e-08,
+      "surface_area_m2": 0.0008194947713822286,
+      "mass_kg": 0.0003882489224041671,
+      "bbox_m": [
+        0.014365000000000001,
+        -0.029299999999999996,
+        0.008,
+        0.03631500000000001,
+        -0.010700000000000001,
+        0.00825
+      ],
+      "centre_of_mass_m": [
+        0.025408883752549877,
+        -0.02,
+        0.008125
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 9.955100574465824e-08,
+      "analytic_relative_error": 0.0,
+      "note": "electrical isolation pad"
+    },
+    {
+      "name": "Q2.lead_drain",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.1808000000000035e-08,
+      "surface_area_m2": 6.047999999999993e-05,
+      "mass_kg": 0.00010579968000000031,
+      "bbox_m": [
+        0.040335,
+        -0.02568,
+        0.01046,
+        0.043335,
+        -0.024480000000000002,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487805,
+        -0.02508,
+        0.01647951219512195
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q2.lead_source",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.180800000000001e-08,
+      "surface_area_m2": 6.0479999999999956e-05,
+      "mass_kg": 0.0001057996800000001,
+      "bbox_m": [
+        0.040335,
+        -0.0206,
+        0.01046,
+        0.043335,
+        -0.019399999999999997,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.042815487804878045,
+        -0.019999999999999997,
+        0.016479512195121955
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q2.lead_driver_source",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.1807999999999997e-08,
+      "surface_area_m2": 6.0479999999999956e-05,
+      "mass_kg": 0.00010579967999999997,
+      "bbox_m": [
+        0.040335,
+        -0.01806,
+        0.01046,
+        0.043335,
+        -0.01686,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487806,
+        -0.01746,
+        0.016479512195121955
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q2.lead_gate",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "copper",
+      "net": "primary",
+      "conductive": true,
+      "density_kg_m3": 8960.0,
+      "volume_m3": 1.1808000000000044e-08,
+      "surface_area_m2": 6.047999999999993e-05,
+      "mass_kg": 0.0001057996800000004,
+      "bbox_m": [
+        0.040335,
+        -0.015519999999999999,
+        0.01046,
+        0.043335,
+        -0.014320000000000001,
+        0.024460000000000003
+      ],
+      "centre_of_mass_m": [
+        0.04281548780487805,
+        -0.01492,
+        0.01647951219512195
+      ],
+      "solid_count": 1,
+      "is_valid": true
+    },
+    {
+      "name": "Q2.bushing",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "nylon_pa66",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": 1140.0,
+      "volume_m3": 4.721219054856138e-08,
+      "surface_area_m2": 0.0002031875314191656,
+      "mass_kg": 5.382189722535997e-05,
+      "bbox_m": [
+        0.019115000000000004,
+        -0.023498912137002857,
+        0.008,
+        0.026115000000000003,
+        -0.016501087862997144,
+        0.014270000000000001
+      ],
+      "centre_of_mass_m": [
+        0.022615,
+        -0.02,
+        0.01272109108252956
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 4.721219054856135e-08,
+      "analytic_relative_error": 7.008195154191875e-16,
+      "note": "insulating shoulder bushing"
+    },
+    {
+      "name": "Q2.screw",
+      "group": "dab_heatsink",
+      "role": "solid",
+      "material": "steel",
+      "net": "pe",
+      "conductive": true,
+      "density_kg_m3": 7850.0,
+      "volume_m3": 1.6790477556559664e-07,
+      "surface_area_m2": 0.00022866082129153307,
+      "mass_kg": 0.0013180524881899337,
+      "bbox_m": [
+        0.019865,
+        -0.022749145250502246,
+        0.0005000000000000004,
+        0.025365000000000002,
+        -0.017250854749497755,
+        0.01727
+      ],
+      "centre_of_mass_m": [
+        0.022615000000000003,
+        -0.02,
+        0.010957551816561655
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "analytic_volume_m3": 1.679047755655967e-07,
+      "analytic_relative_error": 3.152951369314177e-16,
+      "note": "mounting screw (thread engagement not modelled)"
+    },
+    {
+      "name": "clearance_envelope",
+      "group": "dab_heatsink",
+      "role": "envelope",
+      "material": "air",
+      "net": null,
+      "conductive": false,
+      "density_kg_m3": null,
+      "volume_m3": 0.0004326436787000001,
+      "surface_area_m2": 0.0349335409,
+      "mass_kg": 0.0,
+      "bbox_m": [
+        -0.043,
+        -0.043,
+        -0.038,
+        0.043335000000000005,
+        0.043,
+        0.020269999999999996
+      ],
+      "centre_of_mass_m": [
+        0.00016750000000000516,
+        -6.553544804576162e-19,
+        -0.008865
+      ],
+      "solid_count": 1,
+      "is_valid": true,
+      "note": "bounding box of dab_heatsink (leads excluded) expanded by 0.003 m"
+    }
+  ],
+  "contacts": [
+    {
+      "a": "body",
+      "b": "Q1.pad"
+    },
+    {
+      "a": "body",
+      "b": "Q1.bushing"
+    },
+    {
+      "a": "body",
+      "b": "Q2.pad"
+    },
+    {
+      "a": "body",
+      "b": "Q2.bushing"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.tab"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.pad"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.lead_drain"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.lead_source"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.lead_driver_source"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.lead_gate"
+    },
+    {
+      "a": "Q1.body",
+      "b": "Q1.bushing"
+    },
+    {
+      "a": "Q1.tab",
+      "b": "Q1.pad"
+    },
+    {
+      "a": "Q1.tab",
+      "b": "Q1.bushing"
+    },
+    {
+      "a": "Q1.pad",
+      "b": "Q1.bushing"
+    },
+    {
+      "a": "Q1.bushing",
+      "b": "Q1.screw"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.tab"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.pad"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.lead_drain"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.lead_source"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.lead_driver_source"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.lead_gate"
+    },
+    {
+      "a": "Q2.body",
+      "b": "Q2.bushing"
+    },
+    {
+      "a": "Q2.tab",
+      "b": "Q2.pad"
+    },
+    {
+      "a": "Q2.tab",
+      "b": "Q2.bushing"
+    },
+    {
+      "a": "Q2.pad",
+      "b": "Q2.bushing"
+    },
+    {
+      "a": "Q2.bushing",
+      "b": "Q2.screw"
+    }
+  ],
+  "step_reimport": {
+    "path": "dab_heatsink.step",
+    "solids": 19,
+    "volume_m3": 9.274120236145042e-05,
+    "expected_volume_m3": 9.274120236145054e-05,
+    "relative_error": 1.255270784318889e-15,
+    "valid": true
+  },
+  "analytic": {
+    "analytic": {
+      "base_volume": 5.1200000000000004e-05,
+      "fins_volume": 3.7800000000000004e-05,
+      "volume_without_holes": 8.900000000000001e-05,
+      "hole_volume_in_base": 6.376176449725844e-07,
+      "mass_without_holes": 0.2403,
+      "convective_area": 0.058059999999999994
+    }
+  },
+  "warnings": [
+    "device Q1: plastic body overhangs the plate edge (allowed; tab stays on the plate)",
+    "device Q2: plastic body overhangs the plate edge (allowed; tab stays on the plate)"
+  ],
+  "mesh_hints": {
+    "target": "gmsh",
+    "units": "m",
+    "import_note": "Import the STEP with gmsh.model.occ.importShapes; map solids to regions by STEP product names.",
+    "regions": [
+      {
+        "bodies": [
+          "Q1.body",
+          "Q1.tab"
+        ],
+        "group": "device_Q1",
+        "material": "copper",
+        "element_size": 0.001,
+        "note": "heat source: tab/die region"
+      },
+      {
+        "bodies": [
+          "Q2.body",
+          "Q2.tab"
+        ],
+        "group": "device_Q2",
+        "material": "copper",
+        "element_size": 0.001,
+        "note": "heat source: tab/die region"
+      },
+      {
+        "bodies": [
+          "Q1.pad"
+        ],
+        "group": "isolation_pads",
+        "material": "alumina",
+        "element_size": 0.00025,
+        "note": "thin isolation pad: one element across or thermal contact resistance"
+      },
+      {
+        "bodies": [
+          "Q2.pad"
+        ],
+        "group": "isolation_pads",
+        "material": "alumina",
+        "element_size": 0.00025,
+        "note": "thin isolation pad: one element across or thermal contact resistance"
+      },
+      {
+        "bodies": [
+          "body"
+        ],
+        "group": "dab_heatsink",
+        "material": "aluminium_6063",
+        "element_size": 0.005,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.lead_drain"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.lead_source"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.lead_driver_source"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.lead_gate"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.bushing"
+        ],
+        "group": "dab_heatsink",
+        "material": "nylon_pa66",
+        "element_size": 0.0031350000000000006,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q1.screw"
+        ],
+        "group": "dab_heatsink",
+        "material": "steel",
+        "element_size": 0.0027491452505022454,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.lead_drain"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.lead_source"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.lead_driver_source"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.lead_gate"
+        ],
+        "group": "dab_heatsink",
+        "material": "copper",
+        "element_size": 0.0007000000000000001,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.bushing"
+        ],
+        "group": "dab_heatsink",
+        "material": "nylon_pa66",
+        "element_size": 0.0031350000000000006,
+        "note": "default size from the body bounding box"
+      },
+      {
+        "bodies": [
+          "Q2.screw"
+        ],
+        "group": "dab_heatsink",
+        "material": "steel",
+        "element_size": 0.0027491452505022454,
+        "note": "default size from the body bounding box"
+      }
+    ],
+    "fluid_region": {
+      "bbox": [
+        -0.065,
+        -0.043500000000000004,
+        -0.038500000000000006,
+        0.065,
+        0.043500000000000004,
+        0.0
+      ],
+      "element_size": 0.000875,
+      "note": "suggested air domain around the fins for conjugate heat transfer (flow along X)"
+    },
+    "refinement_zones": [],
+    "material_tags": [
+      "alumina",
+      "aluminium_6063",
+      "copper",
+      "epoxy_mold_compound",
+      "nylon_pa66",
+      "steel"
+    ],
+    "net_tags": [
+      "pe",
+      "primary"
+    ],
+    "body_count": 19
+  },
+  "parameters": {
+    "kind": "heatsink",
+    "name": "dab_heatsink",
+    "description": "Plate-fin aluminium heat sink for one SiC half-bridge: two TO-247-4L devices on alumina isolation pads, M3 screw holes, four M4 corner mounting holes. Fins hang down from the base (z < 0). Illustrative model.",
+    "base": {
+      "length": 0.08,
+      "width": 0.08,
+      "thickness": 0.008,
+      "material": "aluminium_6063"
+    },
+    "fins": {
+      "thickness": 0.0015,
+      "height": 0.035,
+      "pitch": 0.005,
+      "count": 12,
+      "length": 0.06
+    },
+    "devices": [
+      {
+        "name": "Q1",
+        "package": "to247_4l",
+        "position": [
+          0.0286,
+          0.02
+        ],
+        "rotation_deg": 0,
+        "net": "primary",
+        "pad": {
+          "thickness": 0.00025,
+          "oversize": 0.0025,
+          "material": "alumina"
+        },
+        "screw_hole_diameter": 0.0032,
+        "lead_form": {
+          "horizontal": 0.003,
+          "vertical": 0.014
+        }
+      },
+      {
+        "name": "Q2",
+        "package": "to247_4l",
+        "position": [
+          0.0286,
+          -0.02
+        ],
+        "rotation_deg": 0,
+        "net": "primary",
+        "pad": {
+          "thickness": 0.00025,
+          "oversize": 0.0025,
+          "material": "alumina"
+        },
+        "screw_hole_diameter": 0.0032,
+        "lead_form": {
+          "horizontal": 0.003,
+          "vertical": 0.014
+        }
+      }
+    ],
+    "mounting_holes": {
+      "diameter": 0.0045,
+      "inset": 0.005
+    },
+    "net": "pe",
+    "clearance_envelope_margin": 0.003,
+    "checks": {
+      "interference": {
+        "enabled": true,
+        "min_overlap_volume": 1e-12
+      },
+      "clearance_pairs": [
+        {
+          "net_a": "primary",
+          "net_b": "pe",
+          "required_clearance": 0.002,
+          "required_creepage": 0.004,
+          "note": "illustrative functional-insulation value between device tabs/leads and the earthed heat sink"
+        }
+      ]
+    }
+  },
+  "timings_s": {
+    "resolve_s": 0.0,
+    "build_s": 0.07922649383544922,
+    "export_s": 0.24748921394348145,
+    "checks_s": 0.7581524848937988,
+    "render_s": 1.5569634437561035
+  },
+  "invalid_shapes": [],
+  "check_summary": {
+    "status": "review",
+    "interference_count": 0,
+    "allowed_overlap_count": 0,
+    "contact_count": 26,
+    "keepout_violation_count": 0,
+    "envelope_intrusion_count": 0,
+    "fit_failures": 0,
+    "clearance_pairs": {
+      "pass": 0,
+      "fail": 0,
+      "review": 1,
+      "no_bodies": 0
+    },
+    "unassigned_conductor_count": 0,
+    "bodies_checked": 19,
+    "note": "required clearance/creepage values are caller inputs; no standard compliance is asserted"
+  }
+}

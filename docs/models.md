@@ -63,6 +63,19 @@ The table above is the recorded Windows run. The same h = 25 W/m²K case package
 3-D figures, extra engineering checks and a comparison with this recorded run, is in
 [`examples/heatsink_to247`](../examples/heatsink_to247/README.md); CI re-executes it on every push.
 
+## (g) Heat sink imported from AIPE-CAD-Agent (`CadHeatSinkModel`)
+
+This model takes the STEP model and metadata written by AIPE-CAD-Agent for a heat sink with devices on isolation pads.
+- **Bodies kept:** the sink and the pads, in perfect contact. Each device tab footprint is imprinted on its pad
+  and receives the device loss as a uniform heat flux.
+- **Boundaries:** a supplied film coefficient on the fin side (z <= 0); everything else is adiabatic.
+- **Mesh:** local refinement makes the 0.25 mm alumina pads one element thick on the finest level.
+- **Reported:** case temperatures and case-to-ambient resistances. Junction temperatures are left to the caller,
+  which adds P x R_th,jc.
+
+The 10 kW DAB primary half-bridge sink is worked through end to end, including an electrothermal closure with the
+AIPE-Thermal-Design loss model, in [`examples/dab_10kw_heatsink`](../examples/dab_10kw_heatsink/README.md).
+
 ## Python API
 
 ```python
